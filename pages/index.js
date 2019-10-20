@@ -31,6 +31,13 @@ import { mdiPlus } from "@mdi/js";
 import FormDialog from '../components/addMemberDialog';
 
 export default function () {
+  React.useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
+  }, []);
+  
   const classes = makeStyles(theme => ({
     center: {
       display: "flex",
@@ -85,6 +92,12 @@ export default function () {
     <Head>
       <title>晨检上报系统</title>
       <link rel='icon' href='/favicon.ico' />
+      <style>{`
+        body{
+          margin: 0px;
+          padding: 0px;
+        }
+      `}</style>
     </Head>,
     <div className={classnames(classes.center)}>
       <AppBar position="static">
@@ -140,18 +153,20 @@ export default function () {
               classes.card
             )}
           >
-            <IconButton
-              className={classes.right}
-              onClick={() => setDialogOpen(true)}
-            >
-              <Icon path={mdiPlus} size={1} />
-            </IconButton>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>姓名</TableCell>
                   <TableCell align="right">性别</TableCell>
                   <TableCell align="right">请假理由</TableCell>
+                  <TableCell>
+                    <IconButton
+                      className={classes.right}
+                      onClick={() => setDialogOpen(true)}
+                    >
+                      <Icon path={mdiPlus} size={1} />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -162,10 +177,11 @@ export default function () {
                     </TableCell>
                     <TableCell align="right">{n.sex === "boy" ? "男" : "女"}</TableCell>
                     <TableCell align="right">{n.reason}</TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 )}
                 {studentList.length === 0 && [<Typography variant="body1" className={classes.margin}>
-                  上报列表是空的
+                  上报列表是空的，点击表格右上角的加号可以添加未到的同学
                 </Typography>,
                 <Typography variant="body1" className={classes.margin}>
                   如果没有需要上报的同学，直接点击下一步提交即可
