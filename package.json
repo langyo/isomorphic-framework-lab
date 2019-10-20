@@ -1,5 +1,5 @@
 {
-  "name": "template",
+  "name": "school-morning-check",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.5.1",
+    "@mdi/js": "^4.5.95",
+    "@mdi/react": "^1.2.1",
     "@mdi/svg": "^4.5.95",
+    "classnames": "^2.2.6",
     "express": "^4.17.1",
     "helmet": "^3.21.1",
     "log4js": "^5.2.2",
