@@ -104,10 +104,10 @@ export default function (props) {
       <DialogActions>
         <Button onClick={props.onClose} color="primary">
           取消
-          </Button>
-        <Button onClick={props.onFinish} color="primary">
+        </Button>
+        <Button onClick={() => props.onSubmit(name, sex, reason)} color="primary">
           添加
-          </Button>
+        </Button>
       </DialogActions>
     </Dialog>
   );

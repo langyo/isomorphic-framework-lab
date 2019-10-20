@@ -63,10 +63,23 @@ export default function () {
       marginRight: "auto"
     }
   }))();
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [grade, setGrade] = React.useState("");
   const [classId, setClass] = React.useState("");
   const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  const [studentList, setStudentList] = React.useState([]);
+  const addMember = (name, sex, reason) => {
+    console.log(name, sex, reason)
+    let n = studentList;
+    n.push({
+      name, sex, reason
+    });
+    setStudentList(n);
+    console.log(studentList)
+    setDialogOpen(false);
+  }
 
   return ([
     <Head>
@@ -142,18 +155,27 @@ export default function () {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    langyo
-                  </TableCell>
-                  <TableCell align="right">男</TableCell>
-                  <TableCell align="right">回家睡觉</TableCell>
-                </TableRow>
+                {studentList.map(n =>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      {n.name}
+                    </TableCell>
+                    <TableCell align="right">{n.sex === "boy" ? "男" : "女"}</TableCell>
+                    <TableCell align="right">{n.reason}</TableCell>
+                  </TableRow>
+                )}
+                {studentList.length === 0 && [<Typography variant="body1" className={classes.margin}>
+                  上报列表是空的
+                </Typography>,
+                <Typography variant="body1" className={classes.margin}>
+                  如果没有需要上报的同学，直接点击下一步提交即可
+                </Typography>]}
               </TableBody>
             </Table>
             <FormDialog
               open={dialogOpen}
               onClose={() => setDialogOpen(false)}
+              onSubmit={addMember}
               reasonMode={false}
             />
           </Paper>
