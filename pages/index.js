@@ -70,7 +70,7 @@ export default function () {
 
   return ([
     <Head>
-      <title>Home</title>
+      <title>晨检上报系统</title>
       <link rel='icon' href='/favicon.ico' />
     </Head>,
     <div className={classnames(classes.center)}>

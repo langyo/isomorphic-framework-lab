@@ -1,4 +1,5 @@
 import React from 'react';
+import { makeStyles } from "@material-ui/core/styles";
 
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -19,9 +20,21 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
-export default function(props) {
+export default function (props) {
+  const classes = makeStyles(theme => ({
+    inputer: {
+      width: 200
+    },
+    selector: {
+      width: 200,
+      margin: 10
+    }
+  }))();
+
   const [name, setName] = React.useState("");
   const [sex, setSex] = React.useState("boy");
+  const [reasonMode, setReasonMode] = React.useState(false);
+  const [reason, setReason] = React.useState("");
 
   return (
     <Dialog fullWidth open={props.open} onClose={props.onClose}>
@@ -31,6 +44,7 @@ export default function(props) {
           请填写当天未到校学生的基本信息与请假理由，一次填写一个。
           </DialogContentText>
         <TextField
+          className={classes.inputer}
           autoFocus
           margin="dense"
           label="姓名"
@@ -59,21 +73,31 @@ export default function(props) {
             <FormControlLabel
               control={
                 <Switch
-                  checked={props.reasonMode}
-                  onChange={props.onChangeReasonMode}
+                  checked={reasonMode}
+                  onChange={() => setReasonMode(!reasonMode)}
                 />
               }
               label="自行填写"
             />
           </Grid>
           <Grid item xs={12}>
-            {props.reasonMode === false && (
-              <Select value={props.reason} onChange={props.onChangeReason}>
-                <MenuItem value={1}>Ten</MenuItem>
-                <MenuItem value={2}>Twenty</MenuItem>
-                <MenuItem value={3}>Thirty</MenuItem>
+            {reasonMode === false && (
+              <Select className={classes.selector} value={reason} onChange={e => setReason(e.target.value)}>
+                <MenuItem value={"感冒/发烧"}>感冒/发烧</MenuItem>
+                <MenuItem value={"腹泻/呕吐"}>腹泻/呕吐</MenuItem>
+                <MenuItem value={"皮疹"}>皮疹</MenuItem>
+                <MenuItem value={"红眼病"}>红眼病</MenuItem>
+                <MenuItem value={"受伤"}>受伤</MenuItem>
               </Select>
             )}
+            {reasonMode === true && (<TextField
+              className={classes.inputer}
+              autoFocus
+              margin="dense"
+              label="理由"
+              valuie={reason}
+              onChange={e => setReason(e.target.value)}
+            />)}
           </Grid>
         </Grid>
       </DialogContent>
