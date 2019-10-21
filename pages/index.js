@@ -74,7 +74,7 @@ export default function () {
     setDialogOpen(false);
   };
   const removeMember = id => {
-    let n = studentList;
+    let n = Array.prototype.slice.call(studentList);
     n.splice(id, 1);
     setStudentList(n);
   }
