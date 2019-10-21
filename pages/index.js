@@ -9,12 +9,6 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import IconButton from "@material-ui/core/IconButton";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -25,10 +19,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 
-import Icon from "@mdi/react";
-import { mdiPlus } from "@mdi/js";
-
-import FormDialog from '../components/addMemberDialog';
+import MemberTable from "../components/memberTable";
 
 export default function () {
   React.useEffect(() => {
@@ -37,7 +28,7 @@ export default function () {
       jssStyles.parentNode.removeChild(jssStyles);
     }
   }, []);
-  
+
   const classes = makeStyles(theme => ({
     center: {
       display: "flex",
@@ -60,9 +51,6 @@ export default function () {
     margin: {
       margin: 10
     },
-    right: {
-      marginLeft: "auto"
-    },
     footMessage: {
       position: "absolute",
       bottom: 0,
@@ -78,14 +66,17 @@ export default function () {
 
   const [studentList, setStudentList] = React.useState([]);
   const addMember = (name, sex, reason) => {
-    console.log(name, sex, reason)
     let n = studentList;
     n.push({
       name, sex, reason
     });
     setStudentList(n);
-    console.log(studentList)
     setDialogOpen(false);
+  };
+  const removeMember = id => {
+    let n = studentList;
+    n.splice(id, 1);
+    setStudentList(n);
   }
 
   return ([
@@ -146,55 +137,13 @@ export default function () {
           </Paper>
         )}
         {activeStep === 1 && (
-          <Paper
-            className={classnames(
-              classes.center,
-              classes.fillWidth,
-              classes.card
-            )}
-          >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>姓名</TableCell>
-                  <TableCell align="right">性别</TableCell>
-                  <TableCell align="right">请假理由</TableCell>
-                  <TableCell>
-                    <IconButton
-                      className={classes.right}
-                      onClick={() => setDialogOpen(true)}
-                    >
-                      <Icon path={mdiPlus} size={1} />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {studentList.map(n =>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      {n.name}
-                    </TableCell>
-                    <TableCell align="right">{n.sex === "boy" ? "男" : "女"}</TableCell>
-                    <TableCell align="right">{n.reason}</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                )}
-                {studentList.length === 0 && [<Typography variant="body1" className={classes.margin}>
-                  上报列表是空的，点击表格右上角的加号可以添加未到的同学
-                </Typography>,
-                <Typography variant="body1" className={classes.margin}>
-                  如果没有需要上报的同学，直接点击下一步提交即可
-                </Typography>]}
-              </TableBody>
-            </Table>
-            <FormDialog
-              open={dialogOpen}
-              onClose={() => setDialogOpen(false)}
-              onSubmit={addMember}
-              reasonMode={false}
-            />
-          </Paper>
+          <MemberTable 
+            dialogOpen={dialogOpen}
+            setDialogOpen={setDialogOpen}
+            addMember={addMember}
+            removeMember={removeMember}
+            studentList={studentList}
+          />
         )}
         {activeStep === 2 && (
           <Paper
