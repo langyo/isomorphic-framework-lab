@@ -78,6 +78,8 @@ export default function () {
     setStudentList(n);
   }
 
+  const addRecord 
+
   return ([
     <Head>
       <title>晨检上报系统</title>

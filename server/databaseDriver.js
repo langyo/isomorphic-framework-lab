@@ -21,4 +21,3 @@ module.exports = db.model("Log", mongoose.Schema({
     reason: String
   }]
 }));
-
