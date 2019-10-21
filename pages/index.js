@@ -17,7 +17,6 @@ import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Grid from "@material-ui/core/Grid";
 
 import MemberTable from "../components/memberTable";
 
