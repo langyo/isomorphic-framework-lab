@@ -9,15 +9,17 @@ db.once('open', () => {
 });
 
 module.exports = db.model("Log", mongoose.Schema({
-  date: Date,
+  date: {
+    type: Date,
+    default: Date.now,
+    index: true
+  },
+  name: String,
+  sex: {
+    type: String,
+    enum: ["boy", "girl"]
+  },
+  reason: String,
   grade: Number,
-  classId: Number,
-  reports: [{
-    name: String,
-    sex: {
-      type: String,
-      enum: ["boy", "girl"]
-    },
-    reason: String
-  }]
+  classId: Number
 }));
