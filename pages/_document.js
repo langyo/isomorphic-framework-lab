@@ -28,20 +28,20 @@ class MyDocument extends Document {
   }
 }
 
-MyDocument.getInitialProps = async ctx => {
+MyDocument.getInitialProps = async context => {
   const sheets = new ServerStyleSheets();
-  const originalRenderPage = ctx.renderPage;
+  const originalRenderPage = context.renderPage;
 
-  ctx.renderPage = () =>
+  context.renderPage = () =>
     originalRenderPage({
       enhanceApp: App => props => sheets.collect(<App {...props} />),
     });
 
-  const initialProps = await Document.getInitialProps(ctx);
+  const initialProps = await Document.getInitialProps(context);
 
   return {
     ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
+    
     styles: [
       <React.Fragment key="styles">
         {initialProps.styles}

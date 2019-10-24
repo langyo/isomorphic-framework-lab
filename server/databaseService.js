@@ -22,16 +22,22 @@ module.exports = server => {
   server.use('/api/submit', (req, res) => {
     console.log("submit has been fetched, ", req.body);
 
-    let item = new logger({
-      name: req.body.name,
-      sex: req.body.sex,
-      reason: req.body.reason,
-      grade: req.body.grade,
-      classId: req.body.classId
-    })
+    let state = 'success';
+    for(let i of req.body.list) {
+      let item = new logger({
+        name: i.name,
+        sex: i.sex,
+        reason: i.reason,
+        grade: req.body.grade,
+        classId: req.body.classId
+      });
 
-    item.save();
-    res.send(JSON.stringify({ state: 'success' }));
+      item.save(err => {
+        if(err) state = 'error';
+      });
+    }
+
+    res.send(JSON.stringify({ state }));
     res.end();
   })
 };

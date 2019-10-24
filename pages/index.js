@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import { connect } from 'react-redux'
 
 import classnames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,7 +21,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 
 import MemberTable from "../components/memberTable";
 
-export default function () {
+export default connect({
+
+}, {
+  
+}, () => {
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
@@ -57,26 +62,6 @@ export default function () {
       marginRight: "auto"
     }
   }))();
-
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [grade, setGrade] = React.useState("");
-  const [classId, setClass] = React.useState("");
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-
-  const [studentList, setStudentList] = React.useState([]);
-  const addMember = (name, sex, reason) => {
-    let n = studentList;
-    n.push({
-      name, sex, reason
-    });
-    setStudentList(n);
-    setDialogOpen(false);
-  };
-  const removeMember = id => {
-    let n = Array.prototype.slice.call(studentList);
-    n.splice(id, 1);
-    setStudentList(n);
-  }
 
   return ([
     <Head>
@@ -136,7 +121,7 @@ export default function () {
           </Paper>
         )}
         {activeStep === 1 && (
-          <MemberTable 
+          <MemberTable
             dialogOpen={dialogOpen}
             setDialogOpen={setDialogOpen}
             addMember={addMember}
@@ -172,16 +157,17 @@ export default function () {
             <Button
               variant="contained"
               color="primary"
-              onClick={() =>
-                setActiveStep(prevActiveStep => prevActiveStep + 1)
-              }
+              onClick={() => {
+                if(activeStep === 1) submitItem();
+                setActiveStep(prevActiveStep => prevActiveStep + 1);
+              }}
               className={classes.margin}
             >
               下一步
             </Button>
           </div>
         )}
-        {activeStep === 2 && (
+        {activeStep === 2 && submitProgress !== "done" && (
           <Button className={classes.margin} onClick={() => setActiveStep(0)}>
             返回至开始位置
           </Button>
@@ -193,4 +179,4 @@ export default function () {
       </Typography>
     </div>
   ]);
-}
+});
