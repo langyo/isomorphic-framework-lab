@@ -28,7 +28,7 @@ export default function (props) {
       margin: 20
     },
     tableItem: {
-      minWidth: 150
+      minWidth: 120
     }
   }))();
 
@@ -49,6 +49,9 @@ export default function (props) {
           <TableCell className={classes.tableItem} align="right">
             <Typography variant="body1">请假理由</Typography>
           </TableCell>
+          <TableCell className={classes.tableItem} align="right">
+            <Typography variant="body1">时间</Typography>
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -65,6 +68,9 @@ export default function (props) {
             </TableCell>
             <TableCell className={classes.tableItem} align="right">
               <Typography variant="body1">{n.reason}</Typography>
+            </TableCell>
+            <TableCell className={classes.tableItem} align="right">
+              <Typography variant="body1">{/^[0-9]+\-([0-9]+\-[0-9]+)/.exec(n.date)[1]}</Typography>
             </TableCell>
           </TableRow>
         )}
