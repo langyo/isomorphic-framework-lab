@@ -1,13 +1,17 @@
 import types from './actionTypes';
 import { createAction } from 'redux-actions';
 
-export default {
+const actions = {
+  increaseStep: createAction(types.increaseStep),
+  decreaseStep: createAction(types.decreaseStep),
+  backToHeadStep: createAction(types.backToHeadStep),
   step1: {
     selectGrade: createAction(types.step1.selectGrade, grade => grade),
     selectClass: createAction(types.step1.selectClass, classId => classId)
   },
   step2: {
     openAddMemberDialog: createAction(types.step2.openAddMemberDialog),
+    closeAddMemberDialog: createAction(types.step2.closeAddMemberDialog),
     submitAndCloseDialog: createAction(types.step2.submitAndCloseDialog,
       (name, sex, reason) => ({name, sex, reason})),
     deleteMember: createAction(types.step2.deleteMember, id => id)
@@ -21,38 +25,37 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          list: studentList,
-          grade: grade,
-          classId: classId
+          list: getState().studentList,
+          grade: getState().grade,
+          classId: getState().classId
         })
       }).then(res => res.json()).then(json => {
-        if(json.state === 'success') dispatch(changeState('success'));
-        else dispatch(changeState(json.state));
-
-        dispatch(fetchList());
+        dispatch(actions.step3.changeState(json.state));
+        dispatch(actions.step3.fetchList());
       }).catch(err => {
         console.log(err);
-        dispatch(changeState('fail'));
+        dispatch(actions.step3.changeState('fail'));
       });
     },
     fetchList: () => (dispatch, getState) => {
-
+      fetch('/api/getLatestList', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json()).then(json => {
+        dispatch(actions.step3.updateLatestListState(json.state));
+        dispatch(actions.step3.updateLatestList(json.list));
+      }).catch(err => {
+        console.log(err);
+        dispatch(actions.step3.updateLatestListState('fail'));
+      });
     },
-    changeState: createAction(types.step3.changeState, state => state)
+    changeState: createAction(types.step3.changeState, state => state),
+    updateLatestList: createAction(types.step3.updateLatestList, list => list),
+    updateLatestListState: createAction(types.step3.updateLatestListState, state => state)
   }
 };
 
-export const changeBtnTextAsync = () => {
-  return (dispatch, getState) => {
-    if (!getState().isLoading) {
-      dispatch(changeBtnText('正在加载中'));
-    }
-    axios.get('http://test.com').then(() => {
-      if (getState().isLoading) {
-        dispatch(changeBtnText('加载完毕'));
-      }
-    }).catch(() => {
-      dispatch(changeBtnText('加载有误'));
-    });
-  };
-};
+export default actions;

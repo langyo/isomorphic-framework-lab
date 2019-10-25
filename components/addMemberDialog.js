@@ -19,7 +19,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
-export default function (props) {
+export default props => {
   const classes = makeStyles(theme => ({
     inputer: {
       width: 200

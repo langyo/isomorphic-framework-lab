@@ -88,7 +88,7 @@ export default function (props) {
     </Typography>]}
     <FormDialog
       open={props.dialogOpen}
-      onClose={() => props.setDialogOpen(false)}
+      onClose={props.setDialogClose}
       onSubmit={props.addMember}
     />
   </Paper>;

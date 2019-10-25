@@ -2,15 +2,15 @@ import { handleActions } from 'redux-actions';
 import types from './actionTypes';
 
 const initialState = {
-  activeStep: 1,
+  activeStep: 0,
 
   dialogOpen: false,
   name: '',
   sex: 'boy',
   reason: '',
 
-  grade: 1,
-  classId: 1,
+  grade: null,
+  classId: null,
   studentList: [],
 
   submitState: 'ready',
@@ -20,6 +20,28 @@ const initialState = {
 };
 
 export default handleActions({
+  [types.increaseStep]: {
+    next: (state, action) => ({
+      ...state,
+      activeStep: state.activeStep + 1
+    }),
+    throw: state => state
+  },
+  [types.decreaseStep]: {
+    next: (state, action) => ({
+      ...state,
+      activeStep: state.activeStep - 1
+    }),
+    throw: state => state
+  },
+  [types.backToHeadStep]: {
+    next: (state, action) => ({
+      ...state,
+      activeStep: 0
+    }),
+    throw: state => state
+  },
+
   [types.step1.selectGrade]: {
     next: (state, action) => ({
       ...state,
@@ -45,6 +67,13 @@ export default handleActions({
     }),
     throw: state => state
   },
+  [types.step2.closeAddMemberDialog]: {
+    next: (state, action) => ({
+      ...state,
+      dialogOpen: false
+    }),
+    throw: state => state
+  },
   [types.step2.submitAndCloseDialog]: {
     next: (state, action) => {
       let studentList = state.studentList;
@@ -61,7 +90,7 @@ export default handleActions({
   },
   [types.step2.deleteMember]: {
     next: (state, action) => {
-      let studentList = state.studentList;
+      let studentList = Array.prototype.slice.call(state.studentList);
       studentList.splice(action.payload, 1);
       return {
         ...state,
@@ -82,6 +111,13 @@ export default handleActions({
     next: (state, action) => ({
       ...state,
       fetchLatestList: action.payload
+    }),
+    throw: state => state
+  },
+  [types.step3.updateLatestListState]: {
+    next: (state, action) => ({
+      ...state,
+      fetchLatestState: action.payload
     }),
     throw: state => state
   }

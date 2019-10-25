@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
-import { connect } from 'react-redux'
+
+import { connect } from 'react-redux';
+import actions from '../src/actions';
 
 import classnames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,11 +23,21 @@ import Toolbar from "@material-ui/core/Toolbar";
 
 import MemberTable from "../components/memberTable";
 
-export default connect({
+export default connect(state => state, dispatch => ({
+  selectGrade: id => dispatch(actions.step1.selectGrade(id)),
+  selectClass: id => dispatch(actions.step1.selectClass(id)),
 
-}, {
-  
-}, () => {
+  openAddMemberDialog: () => dispatch(actions.step2.openAddMemberDialog()),
+  closeAddMemberDialog: () => dispatch(actions.step2.closeAddMemberDialog()),
+  submitAndCloseDialog: (name, sex, reason) => dispatch(actions.step2.submitAndCloseDialog(name, sex, reason)),
+  deleteMember: id => dispatch(actions.step2.deleteMember(id)),
+
+  submitList: () => dispatch(actions.step3.submitList()),
+
+  increaseStep: () => dispatch(actions.increaseStep()),
+  decreaseStep: () => dispatch(actions.decreaseStep()),
+  backToHeadStep: () => dispatch(actions.backToHeadStep())
+}))(props => {
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
@@ -53,7 +65,7 @@ export default connect({
       width: 100
     },
     margin: {
-      margin: 10
+      margin: 20
     },
     footMessage: {
       position: "absolute",
@@ -82,7 +94,7 @@ export default connect({
           </Typography>
         </Toolbar>
       </AppBar>
-      <Stepper activeStep={activeStep} alternativeLabel>
+      <Stepper activeStep={props.activeStep} alternativeLabel>
         {["选择上报班级", "填写上报情况", "提交结果"].map(label => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -90,7 +102,7 @@ export default connect({
         ))}
       </Stepper>
       <div className={classnames(classes.fillWidth, classes.center)}>
-        {activeStep === 0 && (
+        {props.activeStep === 0 && (
           <Paper
             className={classnames(
               classes.centerRow,
@@ -102,7 +114,7 @@ export default connect({
               className={classnames(classes.formControl, classes.margin)}
             >
               <InputLabel>年级</InputLabel>
-              <Select value={grade} onChange={e => setGrade(e.target.value)}>
+              <Select value={props.grade} onChange={e => props.selectGrade(e.target.value)}>
                 <MenuItem value={1}>高一</MenuItem>
                 <MenuItem value={2}>高二</MenuItem>
                 <MenuItem value={3}>高三</MenuItem>
@@ -112,7 +124,7 @@ export default connect({
               className={classnames(classes.formControl, classes.margin)}
             >
               <InputLabel>班级</InputLabel>
-              <Select value={classId} onChange={e => setClass(e.target.value)}>
+              <Select value={props.classId} onChange={e => props.selectClass(e.target.value)}>
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
                 <MenuItem value={3}>3</MenuItem>
@@ -120,16 +132,17 @@ export default connect({
             </FormControl>
           </Paper>
         )}
-        {activeStep === 1 && (
+        {props.activeStep === 1 && (
           <MemberTable
-            dialogOpen={dialogOpen}
-            setDialogOpen={setDialogOpen}
-            addMember={addMember}
-            removeMember={removeMember}
-            studentList={studentList}
+            dialogOpen={props.dialogOpen}
+            setDialogOpen={props.openAddMemberDialog}
+            setDialogClose={props.closeAddMemberDialog}
+            addMember={props.submitAndCloseDialog}
+            removeMember={props.deleteMember}
+            studentList={props.studentList}
           />
         )}
-        {activeStep === 2 && (
+        {props.activeStep === 2 && (
           <Paper
             className={classnames(
               classes.center,
@@ -143,12 +156,12 @@ export default connect({
             <CircularProgress className={classes.margin} />
           </Paper>
         )}
-        {activeStep !== 2 && (
+        {props.activeStep !== 2 && (
           <div className={classes.centerRow}>
             <Button
-              disabled={activeStep === 0}
+              disabled={props.activeStep === 0}
               onClick={() =>
-                setActiveStep(prevActiveStep => prevActiveStep - 1)
+                props.decreaseStep()
               }
               className={classes.margin}
             >
@@ -158,8 +171,8 @@ export default connect({
               variant="contained"
               color="primary"
               onClick={() => {
-                if(activeStep === 1) submitItem();
-                setActiveStep(prevActiveStep => prevActiveStep + 1);
+                if(props.activeStep === 1) props.submitList();
+                props.increaseStep();
               }}
               className={classes.margin}
             >
@@ -167,8 +180,8 @@ export default connect({
             </Button>
           </div>
         )}
-        {activeStep === 2 && submitProgress !== "done" && (
-          <Button className={classes.margin} onClick={() => setActiveStep(0)}>
+        {props.activeStep === 2 && props.submitState !== "done" && (
+          <Button className={classes.margin} onClick={props.backToHeadStep}>
             返回至开始位置
           </Button>
         )}
