@@ -21,7 +21,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 
+import Icon from "@mdi/react";
+import { mdiCheck } from "@mdi/js";
+
 import MemberTable from "../components/memberTable";
+import MemberShowTable from "../components/memberShowTable";
 
 export default connect(state => state, dispatch => ({
   selectGrade: id => dispatch(actions.step1.selectGrade(id)),
@@ -65,13 +69,7 @@ export default connect(state => state, dispatch => ({
       width: 100
     },
     margin: {
-      margin: 20
-    },
-    footMessage: {
-      position: "absolute",
-      bottom: 0,
-      marginLeft: "auto",
-      marginRight: "auto"
+      margin: 10
     }
   }))();
 
@@ -79,12 +77,6 @@ export default connect(state => state, dispatch => ({
     <Head>
       <title>晨检上报系统</title>
       <link rel='icon' href='/favicon.ico' />
-      <style>{`
-        body{
-          margin: 0px;
-          padding: 0px;
-        }
-      `}</style>
     </Head>,
     <div className={classnames(classes.center)}>
       <AppBar position="static">
@@ -150,10 +142,38 @@ export default connect(state => state, dispatch => ({
               classes.card
             )}
           >
-            <Typography className={classes.margin} variant="body2">
-              正在提交
-            </Typography>
-            <CircularProgress className={classes.margin} />
+            {props.submitState === 'loading' && [
+              <Typography className={classes.margin} variant="body1">
+                正在提交
+              </Typography>,
+              <CircularProgress className={classes.margin} />
+            ]}
+            {props.submitState === 'success' && [
+              <Typography className={classes.margin} variant="body1">
+                提交成功
+              </Typography>,
+              <Icon className={classes.margin} path={mdiCheck} size={2} />
+            ]}
+            {props.submitState === 'fail' && [
+              <Typography className={classes.margin} variant="body1">
+                提交失败
+              </Typography>,
+              <Icon className={classes.margin} path={mdiClose} size={2} />
+            ]}
+
+            {props.fetchLatestState === 'loading' && [
+              <Typography className={classes.margin} variant="body1">
+                正在获取最近上报的记录列表
+              </Typography>,
+              <CircularProgress className={classes.margin} />
+            ]}
+            {props.fetchLatestState === 'success' && <MemberShowTable list={props.fetchLatestList} />}
+            {props.fetchLatestState === 'fail' && [
+              <Typography className={classes.margin} variant="body1">
+                获取上报列表失败
+              </Typography>,
+              <Icon className={classes.margin} path={mdiClose} size={2} />
+            ]}
           </Paper>
         )}
         {props.activeStep !== 2 && (
@@ -171,7 +191,7 @@ export default connect(state => state, dispatch => ({
               variant="contained"
               color="primary"
               onClick={() => {
-                if(props.activeStep === 1) props.submitList();
+                if (props.activeStep === 1) props.submitList();
                 props.increaseStep();
               }}
               className={classes.margin}
@@ -186,10 +206,6 @@ export default connect(state => state, dispatch => ({
           </Button>
         )}
       </div>
-      <Typography variant="body2" className={classes.footMessage}>
-        Powered By <a href="https://github.com/langyo">langyo</a>, All Right
-        Reserved
-      </Typography>
     </div>
   ]);
 });

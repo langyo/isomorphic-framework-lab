@@ -18,28 +18,25 @@ import FormDialog from "./addMemberDialog";
 
 export default function (props) {
   const classes = makeStyles(theme => ({
+    body: {
+      width: '90%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginBottom: 30
+    },
     margin: {
-      margin: 10
+      margin: 20
     },
     tableItem: {
-      minWidth: 200
-    },
-    tableIcon: {
-      width: 24
+      minWidth: 150
     }
   }))();
 
-  return <Paper>
+  return <Paper className={classes.body}>
+    <Typography className={classes.margin} variant="h5">最近 10 次晨检上报记录的学生列表</Typography>
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell className={classes.tableIcon}>
-            <IconButton
-              onClick={() => props.setDialogOpen(true)}
-            >
-              <Icon path={mdiPlus} size={1} />
-            </IconButton>
-          </TableCell>
           <TableCell className={classes.tableItem}>
             <Typography variant="body1">姓名</Typography>
           </TableCell>
@@ -47,25 +44,24 @@ export default function (props) {
             <Typography variant="body1">性别</Typography>
           </TableCell>
           <TableCell className={classes.tableItem} align="right">
+            <Typography variant="body1">班级</Typography>
+          </TableCell>
+          <TableCell className={classes.tableItem} align="right">
             <Typography variant="body1">请假理由</Typography>
           </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.studentList.map((n, index) =>
+        {props.list.map((n, index) =>
           <TableRow key={index}>
-            <TableCell className={classes.tableIcon}>
-              <IconButton
-                onClick={() => props.removeMember(index)}
-              >
-                <Icon path={mdiClose} size={1} />
-              </IconButton>
-            </TableCell>
             <TableCell className={classes.tableItem} component="th" scope="row">
               <Typography variant="body1">{n.name}</Typography>
             </TableCell>
             <TableCell className={classes.tableItem} align="right">
               <Typography variant="body1">{n.sex === "boy" ? "男" : "女"}</Typography>
+            </TableCell>
+            <TableCell className={classes.tableItem} align="right">
+              <Typography variant="body1">{['高一', '高二', '高三'][n.grade - 1] + '(' + n.classId + ')班'}</Typography>
             </TableCell>
             <TableCell className={classes.tableItem} align="right">
               <Typography variant="body1">{n.reason}</Typography>
@@ -74,16 +70,5 @@ export default function (props) {
         )}
       </TableBody>
     </Table>
-    {props.studentList.length === 0 && [<Typography variant="body1" className={classes.margin}>
-      上报列表是空的，点击表格左上角的加号可以添加未到的同学
-    </Typography>,
-    <Typography variant="body1" className={classes.margin}>
-      如果没有需要上报的同学，直接点击下一步提交即可
-    </Typography>]}
-    <FormDialog
-      open={props.dialogOpen}
-      onClose={props.setDialogClose}
-      onSubmit={props.addMember}
-    />
   </Paper>;
 }

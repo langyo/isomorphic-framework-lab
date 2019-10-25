@@ -18,6 +18,7 @@ const actions = {
   },
   step3: {
     submitList: () => (dispatch, getState) => {
+      dispatch(actions.step3.changeState('loading'));
       fetch('/api/submit', {
         method: 'POST',
         headers: {
@@ -38,6 +39,7 @@ const actions = {
       });
     },
     fetchList: () => (dispatch, getState) => {
+      dispatch(actions.step3.updateLatestListState('loading'));
       fetch('/api/getLatestList', {
         method: 'POST',
         headers: {
