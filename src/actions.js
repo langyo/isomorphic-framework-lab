@@ -9,6 +9,9 @@ const actions = {
   openDrawer: createAction(types.openDrawer),
   closeDrawer: createAction(types.closeDrawer),
 
+  openAboutDialog: createAction(types.openAboutDialog),
+  closeAboutDialog: createAction(types.closeAboutDialog),
+
   step1: {
     selectGrade: createAction(types.step1.selectGrade, grade => grade),
     selectClass: createAction(types.step1.selectClass, classId => classId)

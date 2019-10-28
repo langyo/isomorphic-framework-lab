@@ -21,13 +21,20 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/LIstItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import CardHeader from "@material-ui/core/CardHeader";
 
 import Icon from "@mdi/react";
-import { mdiCheck, mdiMenu } from "@mdi/js";
+import { mdiCheck, mdiMenu, mdiAccount, mdiInformation, mdiLogin } from "@mdi/js";
 
 import MemberTable from "../components/memberTable";
 import MemberShowTable from "../components/memberShowTable";
-import Drawer from "../components/drawer";
+import AboutDialog from "../components/aboutDialog";
 
 export default connect(state => state, dispatch => ({
   selectGrade: id => dispatch(actions.step1.selectGrade(id)),
@@ -45,7 +52,10 @@ export default connect(state => state, dispatch => ({
   backToHeadStep: () => dispatch(actions.backToHeadStep()),
 
   openDrawer: () => dispatch(actions.openDrawer()),
-  closeDrawer: () => dispatch(actions.closeDrawer())
+  closeDrawer: () => dispatch(actions.closeDrawer()),
+
+  openAboutDIalog: () => dispatch(actions.openAboutDialog()),
+  closeAboutDialog: () => dispatch(actions.closeAboutDialog())
 }))(props => {
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -55,6 +65,13 @@ export default connect(state => state, dispatch => ({
   }, []);
 
   const classes = makeStyles(theme => ({
+    drawerList: {
+      width: 240
+    },
+    divider: {
+      marginTop: 10,
+      marginBottom: 10
+    },
     center: {
       display: "flex",
       justifyContent: "center",
@@ -84,7 +101,35 @@ export default connect(state => state, dispatch => ({
       <link rel='icon' href='/favicon.ico' />
     </Head>,
     <div className={classnames(classes.center)}>
-      <Drawer open={props.drawerOpen} onClose={props.closeDrawer} />
+      <AboutDialog open={props.aboutDialogOpen} onClose={props.closeAboutDialog} />
+      <Drawer
+        anchor="left"
+        open={props.drawerOpen}
+        onClose={props.closeDrawer}
+      >
+        <List className={classes.drawerList}>
+          <CardHeader
+            avatar={
+              <Icon path={mdiAccount} size={1} />
+            }
+            title="公共模式"
+            subheader="当前无管理权限"
+          />
+          <Divider className={classes.divider} />
+          <ListItem button>
+            <ListItemIcon>
+              <Icon path={mdiLogin} size={1} />
+            </ListItemIcon>
+            <ListItemText primary={"管理员登录"} />
+          </ListItem>
+          <ListItem button onClick={props.openAboutDIalog}>
+            <ListItemIcon>
+              <Icon path={mdiInformation} size={1} />
+            </ListItemIcon>
+            <ListItemText primary={"关于"} />
+          </ListItem>
+        </List>
+      </Drawer>
       <AppBar position="static">
         <Toolbar>
           <IconButton onClick={props.openDrawer}>

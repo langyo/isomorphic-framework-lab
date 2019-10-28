@@ -6,6 +6,9 @@ export default {
   openDrawer: 'open-drawer',
   closeDrawer: 'close-drawer',
 
+  openAboutDialog: 'open-about-dialog',
+  closeAboutDialog: 'close-about-dialog',
+
   step1: {
     selectGrade: 'step1-select-grade',
     selectClass: 'step1-select-class'

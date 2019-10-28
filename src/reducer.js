@@ -4,6 +4,7 @@ import types from './actionTypes';
 const initialState = {
   activeStep: 0,
   drawerOpen: false,
+  aboutDialogOpen: false,
 
   dialogOpen: false,
   name: '',
@@ -54,6 +55,21 @@ export default handleActions({
     next: (state, action) => ({
       ...state,
       drawerOpen: false
+    }),
+    throw: state => state
+  },
+
+  [types.openAboutDialog]: {
+    next: (state, action) => ({
+      ...state,
+      aboutDialogOpen: true
+    }),
+    throw: state => state
+  },
+  [types.closeAboutDialog]: {
+    next: (state, action) => ({
+      ...state,
+      aboutDialogOpen: false
     }),
     throw: state => state
   },
