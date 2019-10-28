@@ -5,6 +5,10 @@ const actions = {
   increaseStep: createAction(types.increaseStep),
   decreaseStep: createAction(types.decreaseStep),
   backToHeadStep: createAction(types.backToHeadStep),
+
+  openDrawer: createAction(types.openDrawer),
+  closeDrawer: createAction(types.closeDrawer),
+
   step1: {
     selectGrade: createAction(types.step1.selectGrade, grade => grade),
     selectClass: createAction(types.step1.selectClass, classId => classId)

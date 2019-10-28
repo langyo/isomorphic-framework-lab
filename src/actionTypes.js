@@ -2,6 +2,10 @@ export default {
   increaseStep: 'increase-step',
   decreaseStep: 'decrease-step',
   backToHeadStep: 'back-to-head-step',
+
+  openDrawer: 'open-drawer',
+  closeDrawer: 'close-drawer',
+
   step1: {
     selectGrade: 'step1-select-grade',
     selectClass: 'step1-select-class'

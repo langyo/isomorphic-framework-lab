@@ -3,6 +3,7 @@ import types from './actionTypes';
 
 const initialState = {
   activeStep: 0,
+  drawerOpen: false,
 
   dialogOpen: false,
   name: '',
@@ -38,6 +39,21 @@ export default handleActions({
     next: (state, action) => ({
       ...state,
       activeStep: 0
+    }),
+    throw: state => state
+  },
+
+  [types.openDrawer]: {
+    next: (state, action) => ({
+      ...state,
+      drawerOpen: true
+    }),
+    throw: state => state
+  },
+  [types.closeDrawer]: {
+    next: (state, action) => ({
+      ...state,
+      drawerOpen: false
     }),
     throw: state => state
   },

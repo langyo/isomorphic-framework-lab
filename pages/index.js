@@ -20,12 +20,14 @@ import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
 
 import Icon from "@mdi/react";
-import { mdiCheck } from "@mdi/js";
+import { mdiCheck, mdiMenu } from "@mdi/js";
 
 import MemberTable from "../components/memberTable";
 import MemberShowTable from "../components/memberShowTable";
+import Drawer from "../components/drawer";
 
 export default connect(state => state, dispatch => ({
   selectGrade: id => dispatch(actions.step1.selectGrade(id)),
@@ -40,7 +42,10 @@ export default connect(state => state, dispatch => ({
 
   increaseStep: () => dispatch(actions.increaseStep()),
   decreaseStep: () => dispatch(actions.decreaseStep()),
-  backToHeadStep: () => dispatch(actions.backToHeadStep())
+  backToHeadStep: () => dispatch(actions.backToHeadStep()),
+
+  openDrawer: () => dispatch(actions.openDrawer()),
+  closeDrawer: () => dispatch(actions.closeDrawer())
 }))(props => {
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -79,8 +84,12 @@ export default connect(state => state, dispatch => ({
       <link rel='icon' href='/favicon.ico' />
     </Head>,
     <div className={classnames(classes.center)}>
+      <Drawer open={props.drawerOpen} onClose={props.closeDrawer} />
       <AppBar position="static">
         <Toolbar>
+          <IconButton onClick={props.openDrawer}>
+            <Icon path={mdiMenu} size={1} color="white" />
+          </IconButton>
           <Typography variant="h6" className={classes.margin}>
             晨检上报系统
           </Typography>
