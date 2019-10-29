@@ -14,7 +14,8 @@ const actions = {
 
   step1: {
     selectGrade: createAction(types.step1.selectGrade, grade => grade),
-    selectClass: createAction(types.step1.selectClass, classId => classId)
+    selectClass: createAction(types.step1.selectClass, classId => classId),
+    warnNoGradeOrClass: createAction(types.step1.warnNoGradeOrClass, isOpen => isOpen)
   },
   step2: {
     openAddMemberDialog: createAction(types.step2.openAddMemberDialog),

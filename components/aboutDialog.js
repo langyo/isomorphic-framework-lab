@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 export default props => {
   const classes = makeStyles(theme => ({
     right: {
-      marginLeft: 'auto'
+      textAlign: 'right'
     }
   }))();
 
@@ -22,7 +22,7 @@ export default props => {
       <DialogContent>
         <DialogContentText>
           <Typography variant="body1">
-            这是为我自己的学校定制的晨检上报系统，使用 Material-UI + Redux + React + Next.js。
+            这是为我自己的学校定制的晨检上报系统，使用 Material-UI + Redux + React + Next.js + Express + Mongodb。
           </Typography>
           <Typography variant="body1" className={classes.right}>
             开发者 <a href="https://github.com/langyo">langyo</a>

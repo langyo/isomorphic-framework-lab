@@ -33,7 +33,7 @@ export default function (props) {
   }))();
 
   return <Paper className={classes.body}>
-    <Typography className={classes.margin} variant="h5">最近 10 次晨检上报记录的学生列表</Typography>
+    <Typography className={classes.margin} variant="h6">最近 10 次晨检上报记录的学生列表</Typography>
     <Table>
       <TableHead>
         <TableRow>

@@ -11,7 +11,8 @@ export default {
 
   step1: {
     selectGrade: 'step1-select-grade',
-    selectClass: 'step1-select-class'
+    selectClass: 'step1-select-class',
+    warnNoGradeOrClass: 'warn-no-grade-or-class'
   },
   step2: {
     openAddMemberDialog: 'step2-open-add-member-dialog',

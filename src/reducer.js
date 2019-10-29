@@ -5,6 +5,7 @@ const initialState = {
   activeStep: 0,
   drawerOpen: false,
   aboutDialogOpen: false,
+  warnNoGradeOrClassDialog: false,
 
   dialogOpen: false,
   name: '',
@@ -85,6 +86,13 @@ export default handleActions({
     next: (state, action) => ({
       ...state,
       classId: action.payload
+    }),
+    throw: state => state
+  },
+  [types.step1.warnNoGradeOrClass]: {
+    next: (state, action) => ({
+      ...state,
+      warnNoGradeOrClassDialog: action.payload
     }),
     throw: state => state
   },

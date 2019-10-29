@@ -19,6 +19,8 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
+import WarnDialog from "./popupMessageDialog";
+
 export default props => {
   const classes = makeStyles(theme => ({
     inputer: {
@@ -35,7 +37,14 @@ export default props => {
   const [reasonMode, setReasonMode] = React.useState(false);
   const [reason, setReason] = React.useState("");
 
-  return (
+  const [warnDialog, setWarnDialog] = React.useState(false);
+
+  return [
+    <WarnDialog
+      open={warnDialog}
+      text="请填写完整的信息，包括姓名与请假理由！"
+      onClose={() => setWarnDialog(false)}
+    />,
     <Dialog fullWidth open={props.open} onClose={props.onClose}>
       <DialogTitle>添加学生</DialogTitle>
       <DialogContent>
@@ -104,10 +113,13 @@ export default props => {
         <Button onClick={props.onClose} color="primary">
           取消
         </Button>
-        <Button onClick={() => props.onSubmit(name, sex, reason)} color="primary">
+        <Button onClick={() => {
+          if (name && reason) props.onSubmit(name, sex, reason);
+          else setWarnDialog(true);
+        }} color="primary">
           添加
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  ];
 }

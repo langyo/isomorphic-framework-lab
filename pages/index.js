@@ -34,11 +34,14 @@ import { mdiCheck, mdiMenu, mdiAccount, mdiInformation, mdiLogin } from "@mdi/js
 
 import MemberTable from "../components/memberTable";
 import MemberShowTable from "../components/memberShowTable";
+import PopupMessage from "../components/popupMessageDialog";
 import AboutDialog from "../components/aboutDialog";
 
 export default connect(state => state, dispatch => ({
   selectGrade: id => dispatch(actions.step1.selectGrade(id)),
   selectClass: id => dispatch(actions.step1.selectClass(id)),
+  openWarnNoGradeOrClassDialog: () => dispatch(actions.step1.warnNoGradeOrClass(true)),
+  closeWarnNoGradeOrClassDialog: () => dispatch(actions.step1.warnNoGradeOrClass(false)),
 
   openAddMemberDialog: () => dispatch(actions.step2.openAddMemberDialog()),
   closeAddMemberDialog: () => dispatch(actions.step2.closeAddMemberDialog()),
@@ -54,7 +57,7 @@ export default connect(state => state, dispatch => ({
   openDrawer: () => dispatch(actions.openDrawer()),
   closeDrawer: () => dispatch(actions.closeDrawer()),
 
-  openAboutDIalog: () => dispatch(actions.openAboutDialog()),
+  openAboutDialog: () => dispatch(actions.openAboutDialog()),
   closeAboutDialog: () => dispatch(actions.closeAboutDialog())
 }))(props => {
   React.useEffect(() => {
@@ -122,7 +125,7 @@ export default connect(state => state, dispatch => ({
             </ListItemIcon>
             <ListItemText primary={"管理员登录"} />
           </ListItem>
-          <ListItem button onClick={props.openAboutDIalog}>
+          <ListItem button onClick={props.openAboutDialog}>
             <ListItemIcon>
               <Icon path={mdiInformation} size={1} />
             </ListItemIcon>
@@ -148,6 +151,11 @@ export default connect(state => state, dispatch => ({
         ))}
       </Stepper>
       <div className={classnames(classes.fillWidth, classes.center)}>
+        <PopupMessage
+          open={props.warnNoGradeOrClassDialog}
+          onClose={props.closeWarnNoGradeOrClassDialog}
+          text="请选择完整的班级！"
+        />
         {props.activeStep === 0 && (
           <Paper
             className={classnames(
@@ -245,7 +253,13 @@ export default connect(state => state, dispatch => ({
               variant="contained"
               color="primary"
               onClick={() => {
-                if (props.activeStep === 1) props.submitList();
+                if (props.activeStep === 0) {
+                  if (!(props.classId && props.grade)) {
+                    props.openWarnNoGradeOrClassDialog();
+                    return;
+                  }
+                }
+                else if (props.activeStep === 1) props.submitList();
                 props.increaseStep();
               }}
               className={classes.margin}

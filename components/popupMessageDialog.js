@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 
 export default props => {
   return (
-    <Dialog fullWidth open={props.open} onClose={props.onClose}>
+    <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle>提示</DialogTitle>
       <DialogContent>
         <DialogContentText>
