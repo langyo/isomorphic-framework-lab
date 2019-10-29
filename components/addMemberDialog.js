@@ -56,7 +56,7 @@ export default props => {
           autoFocus
           margin="dense"
           label="姓名"
-          valuie={name}
+          value={name}
           onChange={e => setName(e.target.value)}
         />
         <Divider />

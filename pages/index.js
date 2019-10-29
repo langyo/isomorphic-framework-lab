@@ -36,12 +36,17 @@ import MemberTable from "../components/memberTable";
 import MemberShowTable from "../components/memberShowTable";
 import PopupMessage from "../components/popupMessageDialog";
 import AboutDialog from "../components/aboutDialog";
+import LoginDialog from "../components/loginDialog";
 
 export default connect(state => state, dispatch => ({
   selectGrade: id => dispatch(actions.step1.selectGrade(id)),
   selectClass: id => dispatch(actions.step1.selectClass(id)),
-  openWarnNoGradeOrClassDialog: () => dispatch(actions.step1.warnNoGradeOrClass(true)),
-  closeWarnNoGradeOrClassDialog: () => dispatch(actions.step1.warnNoGradeOrClass(false)),
+  openWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(true)),
+  closeWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(false)),
+
+  openLoginDialog: () => dispatch(actions.openLoginDialog()),
+  closeLoginDialog: () => dispatch(actions.closeLoginDialog()),
+  submitAndCloseLoginDialog: (name, password) => dispatch(actions.submitAndCloseLoginDialog(name, password)),
 
   openAddMemberDialog: () => dispatch(actions.step2.openAddMemberDialog()),
   closeAddMemberDialog: () => dispatch(actions.step2.closeAddMemberDialog()),
@@ -104,6 +109,7 @@ export default connect(state => state, dispatch => ({
       <link rel='icon' href='/favicon.ico' />
     </Head>,
     <div className={classnames(classes.center)}>
+      <LoginDialog open={props.loginDialogOpen} onClose={props.closeLoginDialog} />
       <AboutDialog open={props.aboutDialogOpen} onClose={props.closeAboutDialog} />
       <Drawer
         anchor="left"
@@ -119,7 +125,7 @@ export default connect(state => state, dispatch => ({
             subheader="当前无管理权限"
           />
           <Divider className={classes.divider} />
-          <ListItem button>
+          <ListItem button onClick={props.openLoginDialog}>
             <ListItemIcon>
               <Icon path={mdiLogin} size={1} />
             </ListItemIcon>
@@ -152,7 +158,7 @@ export default connect(state => state, dispatch => ({
       </Stepper>
       <div className={classnames(classes.fillWidth, classes.center)}>
         <PopupMessage
-          open={props.warnNoGradeOrClassDialog}
+          open={props.warnNoGradeOrClassDialogOpen}
           onClose={props.closeWarnNoGradeOrClassDialog}
           text="请选择完整的班级！"
         />
@@ -188,7 +194,7 @@ export default connect(state => state, dispatch => ({
         )}
         {props.activeStep === 1 && (
           <MemberTable
-            dialogOpen={props.dialogOpen}
+            dialogOpen={props.addMemberDialogOpen}
             setDialogOpen={props.openAddMemberDialog}
             setDialogClose={props.closeAddMemberDialog}
             addMember={props.submitAndCloseDialog}

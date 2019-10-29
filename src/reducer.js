@@ -4,13 +4,11 @@ import types from './actionTypes';
 const initialState = {
   activeStep: 0,
   drawerOpen: false,
-  aboutDialogOpen: false,
-  warnNoGradeOrClassDialog: false,
 
-  dialogOpen: false,
-  name: '',
-  sex: 'boy',
-  reason: '',
+  aboutDialogOpen: false,
+  warnNoGradeOrClassDialogOpen: false,
+  loginDialogOpen: false,
+  addMemberDialogOpen: false,
 
   grade: null,
   classId: null,
@@ -19,7 +17,9 @@ const initialState = {
   submitState: 'ready',
 
   fetchLatestState: 'ready',
-  fetchLatestList: []
+  fetchLatestList: [],
+
+  rootMode: false
 };
 
 export default handleActions({
@@ -75,6 +75,21 @@ export default handleActions({
     throw: state => state
   },
 
+  [types.openLoginDialog]: {
+    next: (state, action) => ({
+      ...state,
+      loginDialogOpen: true
+    }),
+    throw: state => state
+  },
+  [types.closeLoginDialog]: {
+    next: (state, action) => ({
+      ...state,
+      loginDialogOpen: false
+    }),
+    throw: state => state
+  },
+
   [types.step1.selectGrade]: {
     next: (state, action) => ({
       ...state,
@@ -89,10 +104,10 @@ export default handleActions({
     }),
     throw: state => state
   },
-  [types.step1.warnNoGradeOrClass]: {
+  [types.step1.setWarnNoGradeOrClassDialog]: {
     next: (state, action) => ({
       ...state,
-      warnNoGradeOrClassDialog: action.payload
+      warnNoGradeOrClassDialogOpen: action.payload
     }),
     throw: state => state
   },
@@ -100,17 +115,14 @@ export default handleActions({
   [types.step2.openAddMemberDialog]: {
     next: (state, action) => ({
       ...state,
-      dialogOpen: true,
-      name: '',
-      sex: 'boy',
-      reason: ''
+      addMemberDialogOpen: true
     }),
     throw: state => state
   },
   [types.step2.closeAddMemberDialog]: {
     next: (state, action) => ({
       ...state,
-      dialogOpen: false
+      addMemberDialogOpen: false
     }),
     throw: state => state
   },
@@ -122,7 +134,7 @@ export default handleActions({
       });
       return {
         ...state,
-        dialogOpen: false,
+        addMemberDialogOpen: false,
         studentList
       }
     },

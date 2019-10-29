@@ -9,10 +9,13 @@ export default {
   openAboutDialog: 'open-about-dialog',
   closeAboutDialog: 'close-about-dialog',
 
+  openLoginDialog: 'open-login-dialog',
+  closeLoginDialog: 'close-login-dialog',
+
   step1: {
     selectGrade: 'step1-select-grade',
     selectClass: 'step1-select-class',
-    warnNoGradeOrClass: 'warn-no-grade-or-class'
+    setWarnNoGradeOrClassDialog: 'warn-no-grade-or-class'
   },
   step2: {
     openAddMemberDialog: 'step2-open-add-member-dialog',
