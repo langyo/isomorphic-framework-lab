@@ -12,12 +12,6 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Paper from "@material-ui/core/Paper";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -30,13 +24,15 @@ import Divider from "@material-ui/core/Divider";
 import CardHeader from "@material-ui/core/CardHeader";
 
 import Icon from "@mdi/react";
-import { mdiCheck, mdiMenu, mdiAccount, mdiInformation, mdiLogin } from "@mdi/js";
+import { mdiMenu, mdiAccount, mdiInformation, mdiLogin } from "@mdi/js";
 
-import MemberTable from "../components/memberTable";
-import MemberShowTable from "../components/memberShowTable";
-import PopupMessage from "../components/popupMessageDialog";
-import AboutDialog from "../components/aboutDialog";
-import LoginDialog from "../components/loginDialog";
+import PageStep1 from "../components/pages/step1";
+import PageStep2 from "../components/pages/step2";
+import PageStep3 from "../components/pages/step3";
+
+import PopupMessage from "../components/dialogs/popupMessageDialog";
+import AboutDialog from "../components/dialogs/aboutDialog";
+import LoginDialog from "../components/dialogs/loginDialog";
 
 export default connect(state => state, dispatch => ({
   selectGrade: id => dispatch(actions.step1.selectGrade(id)),
@@ -162,88 +158,9 @@ export default connect(state => state, dispatch => ({
           onClose={props.closeWarnNoGradeOrClassDialog}
           text="请选择完整的班级！"
         />
-        {props.activeStep === 0 && (
-          <Paper
-            className={classnames(
-              classes.centerRow,
-              classes.fillWidth,
-              classes.card
-            )}
-          >
-            <FormControl
-              className={classnames(classes.formControl, classes.margin)}
-            >
-              <InputLabel>年级</InputLabel>
-              <Select value={props.grade} onChange={e => props.selectGrade(e.target.value)}>
-                <MenuItem value={1}>高一</MenuItem>
-                <MenuItem value={2}>高二</MenuItem>
-                <MenuItem value={3}>高三</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl
-              className={classnames(classes.formControl, classes.margin)}
-            >
-              <InputLabel>班级</InputLabel>
-              <Select value={props.classId} onChange={e => props.selectClass(e.target.value)}>
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-              </Select>
-            </FormControl>
-          </Paper>
-        )}
-        {props.activeStep === 1 && (
-          <MemberTable
-            dialogOpen={props.addMemberDialogOpen}
-            setDialogOpen={props.openAddMemberDialog}
-            setDialogClose={props.closeAddMemberDialog}
-            addMember={props.submitAndCloseDialog}
-            removeMember={props.deleteMember}
-            studentList={props.studentList}
-          />
-        )}
-        {props.activeStep === 2 && (
-          <Paper
-            className={classnames(
-              classes.center,
-              classes.fillWidth,
-              classes.card
-            )}
-          >
-            {props.submitState === 'loading' && [
-              <Typography className={classes.margin} variant="body1">
-                正在提交
-              </Typography>,
-              <CircularProgress className={classes.margin} />
-            ]}
-            {props.submitState === 'success' && [
-              <Typography className={classes.margin} variant="body1">
-                提交成功
-              </Typography>,
-              <Icon className={classes.margin} path={mdiCheck} size={2} />
-            ]}
-            {props.submitState === 'fail' && [
-              <Typography className={classes.margin} variant="body1">
-                提交失败
-              </Typography>,
-              <Icon className={classes.margin} path={mdiClose} size={2} />
-            ]}
-
-            {props.fetchLatestState === 'loading' && [
-              <Typography className={classes.margin} variant="body1">
-                正在获取最近上报的记录列表
-              </Typography>,
-              <CircularProgress className={classes.margin} />
-            ]}
-            {props.fetchLatestState === 'success' && <MemberShowTable list={props.fetchLatestList} />}
-            {props.fetchLatestState === 'fail' && [
-              <Typography className={classes.margin} variant="body1">
-                获取上报列表失败
-              </Typography>,
-              <Icon className={classes.margin} path={mdiClose} size={2} />
-            ]}
-          </Paper>
-        )}
+        {props.activeStep === 0 && <PageStep1 {...props} />}
+        {props.activeStep === 1 && <PageStep2 {...props} />}
+        {props.activeStep === 2 && <PageStep3 {...props} />}
         {props.activeStep !== 2 && (
           <div className={classes.centerRow}>
             <Button

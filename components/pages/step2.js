@@ -14,29 +14,32 @@ import Paper from "@material-ui/core/Paper";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiClose } from "@mdi/js";
 
-import FormDialog from "./addMemberDialog";
+import FormDialog from "../dialogs/addMemberDialog";
 
-export default function (props) {
+export default props => {
   const classes = makeStyles(theme => ({
-    body: {
-      width: '90%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      marginBottom: 30
-    },
     margin: {
-      margin: 20
+      margin: 10
     },
     tableItem: {
-      minWidth: 120
+      minWidth: 200
+    },
+    tableIcon: {
+      width: 24
     }
   }))();
 
-  return <Paper className={classes.body}>
-    <Typography className={classes.margin} variant="h6">最近 10 次晨检上报记录的学生列表</Typography>
+  return <Paper>
     <Table>
       <TableHead>
         <TableRow>
+          <TableCell className={classes.tableIcon}>
+            <IconButton
+              onClick={() => props.openAddMemberDialog(true)}
+            >
+              <Icon path={mdiPlus} size={1} />
+            </IconButton>
+          </TableCell>
           <TableCell className={classes.tableItem}>
             <Typography variant="body1">姓名</Typography>
           </TableCell>
@@ -44,19 +47,20 @@ export default function (props) {
             <Typography variant="body1">性别</Typography>
           </TableCell>
           <TableCell className={classes.tableItem} align="right">
-            <Typography variant="body1">班级</Typography>
-          </TableCell>
-          <TableCell className={classes.tableItem} align="right">
             <Typography variant="body1">请假理由</Typography>
-          </TableCell>
-          <TableCell className={classes.tableItem} align="right">
-            <Typography variant="body1">时间</Typography>
           </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.list.map((n, index) =>
+        {props.studentList.map((n, index) =>
           <TableRow key={index}>
+            <TableCell className={classes.tableIcon}>
+              <IconButton
+                onClick={() => props.deleteMember(index)}
+              >
+                <Icon path={mdiClose} size={1} />
+              </IconButton>
+            </TableCell>
             <TableCell className={classes.tableItem} component="th" scope="row">
               <Typography variant="body1">{n.name}</Typography>
             </TableCell>
@@ -64,17 +68,22 @@ export default function (props) {
               <Typography variant="body1">{n.sex === "boy" ? "男" : "女"}</Typography>
             </TableCell>
             <TableCell className={classes.tableItem} align="right">
-              <Typography variant="body1">{['高一', '高二', '高三'][n.grade - 1] + '(' + n.classId + ')班'}</Typography>
-            </TableCell>
-            <TableCell className={classes.tableItem} align="right">
               <Typography variant="body1">{n.reason}</Typography>
-            </TableCell>
-            <TableCell className={classes.tableItem} align="right">
-              <Typography variant="body1">{/^[0-9]+\-([0-9]+\-[0-9]+)/.exec(n.date)[1]}</Typography>
             </TableCell>
           </TableRow>
         )}
       </TableBody>
     </Table>
+    {props.studentList.length === 0 && [<Typography variant="body1" className={classes.margin}>
+      上报列表是空的，点击表格左上角的加号可以添加未到的同学
+    </Typography>,
+    <Typography variant="body1" className={classes.margin}>
+      如果没有需要上报的同学，直接点击下一步提交即可
+    </Typography>]}
+    <FormDialog
+      open={props.addMemberDialogOpen}
+      onClose={props.closeAddMemberDialog}
+      onSubmit={props.submitAndCloseDialog}
+    />
   </Paper>;
 }
