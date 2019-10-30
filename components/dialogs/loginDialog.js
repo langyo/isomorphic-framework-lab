@@ -30,10 +30,11 @@ export default props => {
       text="请填写完整！"
       onClose={() => setWarnDialog(false)}
     />,
-    <Dialog fullWidth open={props.open} onClose={props.onClose}>
+    <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle>管理员登录</DialogTitle>
       <DialogContent>
         <Grid container>
+          <Grid item xs />
           <Grid item xs={12}>
             <TextField
               className={classes.inputer}
@@ -44,10 +45,13 @@ export default props => {
               onChange={e => setName(e.target.value)}
             />
           </Grid>
+          <Grid item xs />
+        </Grid>
+        <Grid container>
+          <Grid item xs />
           <Grid item xs={12}>
             <TextField
               className={classes.inputer}
-              autoFocus
               margin="dense"
               label="密码"
               type="password"
@@ -55,6 +59,7 @@ export default props => {
               onChange={e => setPassword(e.target.value)}
             />
           </Grid>
+          <Grid item xs />
         </Grid>
         <Divider />
       </DialogContent>

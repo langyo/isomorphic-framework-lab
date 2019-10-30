@@ -34,32 +34,43 @@ import PopupMessage from "../components/dialogs/popupMessageDialog";
 import AboutDialog from "../components/dialogs/aboutDialog";
 import LoginDialog from "../components/dialogs/loginDialog";
 
-export default connect(state => state, dispatch => ({
-  selectGrade: id => dispatch(actions.step1.selectGrade(id)),
-  selectClass: id => dispatch(actions.step1.selectClass(id)),
-  openWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(true)),
-  closeWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(false)),
+export default connect(state => ({ state }), dispatch => ({
+  dispatcher: {
+    views: {
+      increaseStep: () => dispatch(actions.increaseStep()),
+      decreaseStep: () => dispatch(actions.decreaseStep()),
+      backToHeadStep: () => dispatch(actions.backToHeadStep()),
 
-  openLoginDialog: () => dispatch(actions.openLoginDialog()),
-  closeLoginDialog: () => dispatch(actions.closeLoginDialog()),
-  submitAndCloseLoginDialog: (name, password) => dispatch(actions.submitAndCloseLoginDialog(name, password)),
+      openDrawer: () => dispatch(actions.openDrawer()),
+      closeDrawer: () => dispatch(actions.closeDrawer()),
 
-  openAddMemberDialog: () => dispatch(actions.step2.openAddMemberDialog()),
-  closeAddMemberDialog: () => dispatch(actions.step2.closeAddMemberDialog()),
-  submitAndCloseDialog: (name, sex, reason) => dispatch(actions.step2.submitAndCloseDialog(name, sex, reason)),
-  deleteMember: id => dispatch(actions.step2.deleteMember(id)),
+      openLoginDialog: () => dispatch(actions.openLoginDialog()),
+      closeLoginDialog: () => dispatch(actions.closeLoginDialog()),
+      submitAndCloseLoginDialog: (name, password) => dispatch(actions.submitAndCloseLoginDialog(name, password)),
 
-  submitList: () => dispatch(actions.step3.submitList()),
+      openAboutDialog: () => dispatch(actions.openAboutDialog()),
+      closeAboutDialog: () => dispatch(actions.closeAboutDialog())
+    },
 
-  increaseStep: () => dispatch(actions.increaseStep()),
-  decreaseStep: () => dispatch(actions.decreaseStep()),
-  backToHeadStep: () => dispatch(actions.backToHeadStep()),
+    pages: {
+      step1: {
+        selectGrade: id => dispatch(actions.step1.selectGrade(id)),
+        selectClass: id => dispatch(actions.step1.selectClass(id)),
 
-  openDrawer: () => dispatch(actions.openDrawer()),
-  closeDrawer: () => dispatch(actions.closeDrawer()),
-
-  openAboutDialog: () => dispatch(actions.openAboutDialog()),
-  closeAboutDialog: () => dispatch(actions.closeAboutDialog())
+        openWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(true)),
+        closeWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(false)),
+      },
+      step2: {
+        openAddMemberDialog: () => dispatch(actions.step2.openAddMemberDialog()),
+        closeAddMemberDialog: () => dispatch(actions.step2.closeAddMemberDialog()),
+        submitAndCloseDialog: (name, sex, reason) => dispatch(actions.step2.submitAndCloseDialog(name, sex, reason)),
+        deleteMember: id => dispatch(actions.step2.deleteMember(id))
+      },
+      step3: {
+        submitList: () => dispatch(actions.step3.submitList())
+      }
+    }
+  }
 }))(props => {
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -105,12 +116,12 @@ export default connect(state => state, dispatch => ({
       <link rel='icon' href='/favicon.ico' />
     </Head>,
     <div className={classnames(classes.center)}>
-      <LoginDialog open={props.loginDialogOpen} onClose={props.closeLoginDialog} />
-      <AboutDialog open={props.aboutDialogOpen} onClose={props.closeAboutDialog} />
+      <LoginDialog open={props.state.views.loginDialogOpen} onClose={props.dispatcher.views.closeLoginDialog} />
+      <AboutDialog open={props.state.views.aboutDialogOpen} onClose={props.dispatcher.views.closeAboutDialog} />
       <Drawer
         anchor="left"
-        open={props.drawerOpen}
-        onClose={props.closeDrawer}
+        open={props.state.views.drawerOpen}
+        onClose={props.dispatcher.views.closeDrawer}
       >
         <List className={classes.drawerList}>
           <CardHeader
@@ -121,13 +132,13 @@ export default connect(state => state, dispatch => ({
             subheader="当前无管理权限"
           />
           <Divider className={classes.divider} />
-          <ListItem button onClick={props.openLoginDialog}>
+          <ListItem button onClick={props.dispatcher.views.openLoginDialog}>
             <ListItemIcon>
               <Icon path={mdiLogin} size={1} />
             </ListItemIcon>
             <ListItemText primary={"管理员登录"} />
           </ListItem>
-          <ListItem button onClick={props.openAboutDialog}>
+          <ListItem button onClick={props.dispatcher.views.openAboutDialog}>
             <ListItemIcon>
               <Icon path={mdiInformation} size={1} />
             </ListItemIcon>
@@ -137,7 +148,7 @@ export default connect(state => state, dispatch => ({
       </Drawer>
       <AppBar position="static">
         <Toolbar>
-          <IconButton onClick={props.openDrawer}>
+          <IconButton onClick={props.dispatcher.views.openDrawer}>
             <Icon path={mdiMenu} size={1} color="white" />
           </IconButton>
           <Typography variant="h6" className={classes.margin}>
@@ -145,7 +156,7 @@ export default connect(state => state, dispatch => ({
           </Typography>
         </Toolbar>
       </AppBar>
-      <Stepper activeStep={props.activeStep} alternativeLabel>
+      <Stepper activeStep={props.state.views.activeStep} alternativeLabel>
         {["选择上报班级", "填写上报情况", "提交结果"].map(label => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -154,20 +165,39 @@ export default connect(state => state, dispatch => ({
       </Stepper>
       <div className={classnames(classes.fillWidth, classes.center)}>
         <PopupMessage
-          open={props.warnNoGradeOrClassDialogOpen}
-          onClose={props.closeWarnNoGradeOrClassDialog}
+          open={props.state.pages.step1.warnNoGradeOrClassDialogOpen}
+          onClose={props.dispatcher.pages.step1.closeWarnNoGradeOrClassDialog}
           text="请选择完整的班级！"
         />
-        {props.activeStep === 0 && <PageStep1 {...props} />}
-        {props.activeStep === 1 && <PageStep2 {...props} />}
-        {props.activeStep === 2 && <PageStep3 {...props} />}
-        {props.activeStep !== 2 && (
+        {props.state.views.activeStep === 0 && <PageStep1
+          {...props.state.pages.step1}
+          {...props.state.views}
+          {...props.state.data}
+          {...props.dispatcher.pages.step1}
+          {...props.dispatcher.views}
+          {...props.dispatcher.data}
+        />}
+        {props.state.views.activeStep === 1 && <PageStep2
+          {...props.state.pages.step2}
+          {...props.state.views}
+          {...props.state.data}
+          {...props.dispatcher.pages.step2}
+          {...props.dispatcher.views}
+          {...props.dispatcher.data}
+        />}
+        {props.state.views.activeStep === 2 && <PageStep3
+          {...props.state.pages.step3}
+          {...props.state.views}
+          {...props.state.data}
+          {...props.dispatcher.pages.step3}
+          {...props.dispatcher.views}
+          {...props.dispatcher.data}
+        />}
+        {props.state.views.activeStep !== 2 && (
           <div className={classes.centerRow}>
             <Button
-              disabled={props.activeStep === 0}
-              onClick={() =>
-                props.decreaseStep()
-              }
+              disabled={props.state.views.activeStep === 0}
+              onClick={props.dispatcher.views.decreaseStep}
               className={classes.margin}
             >
               上一步
@@ -176,14 +206,14 @@ export default connect(state => state, dispatch => ({
               variant="contained"
               color="primary"
               onClick={() => {
-                if (props.activeStep === 0) {
-                  if (!(props.classId && props.grade)) {
-                    props.openWarnNoGradeOrClassDialog();
+                if (props.state.views.activeStep === 0) {
+                  if (!(props.state.pages.step1.classId && props.state.pages.step1.grade)) {
+                    props.dispatcher.pages.step1.openWarnNoGradeOrClassDialog();
                     return;
                   }
                 }
-                else if (props.activeStep === 1) props.submitList();
-                props.increaseStep();
+                else if (props.state.views.activeStep === 1) props.dispatcher.pages.step3.submitList();
+                props.dispatcher.views.increaseStep();
               }}
               className={classes.margin}
             >
@@ -191,8 +221,8 @@ export default connect(state => state, dispatch => ({
             </Button>
           </div>
         )}
-        {props.activeStep === 2 && props.submitState !== "done" && (
-          <Button className={classes.margin} onClick={props.backToHeadStep}>
+        {props.state.views.activeStep === 2 && props.state.pages.step3.submitState !== "done" && (
+          <Button className={classes.margin} onClick={props.dispatcher.views.backToHeadStep}>
             返回至开始位置
           </Button>
         )}
