@@ -40,9 +40,9 @@ const actions = {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          list: getState().studentList,
-          grade: getState().grade,
-          classId: getState().classId
+          list: getState().pages.step2.studentList,
+          grade: getState().pages.step1.grade,
+          classId: getState().pages.step1.classId
         })
       }).then(res => res.json()).then(json => {
         dispatch(actions.step3.changeState(json.state));
