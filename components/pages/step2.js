@@ -10,6 +10,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 
 import Icon from "@mdi/react";
 import { mdiPlus, mdiClose } from "@mdi/js";
@@ -18,6 +19,12 @@ import FormDialog from "../dialogs/addMemberDialog";
 
 export default props => {
   const classes = makeStyles(theme => ({
+    centerRow: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row"
+    },
     margin: {
       margin: 10
     },
@@ -29,7 +36,7 @@ export default props => {
     }
   }))();
 
-  return <Paper>
+  return [<Paper>
     <Table>
       <TableHead>
         <TableRow>
@@ -85,5 +92,24 @@ export default props => {
       onClose={props.closeAddMemberDialog}
       onSubmit={props.submitAndCloseDialog}
     />
-  </Paper>;
+  </Paper>,
+  <div className={classes.centerRow}>
+    <Button
+      onClick={props.decreaseStep}
+      className={classes.margin}
+    >
+      上一步
+    </Button>
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={() => {
+        props.submitList();
+        props.increaseStep();
+      }}
+      className={classes.margin}
+    >
+      下一步
+    </Button>
+  </div>];
 }

@@ -56,7 +56,6 @@ export default connect(state => ({ state }), dispatch => ({
       step1: {
         selectGrade: id => dispatch(actions.step1.selectGrade(id)),
         selectClass: id => dispatch(actions.step1.selectClass(id)),
-
         openWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(true)),
         closeWarnNoGradeOrClassDialog: () => dispatch(actions.step1.setWarnNoGradeOrClassDialog(false)),
       },
@@ -64,10 +63,10 @@ export default connect(state => ({ state }), dispatch => ({
         openAddMemberDialog: () => dispatch(actions.step2.openAddMemberDialog()),
         closeAddMemberDialog: () => dispatch(actions.step2.closeAddMemberDialog()),
         submitAndCloseDialog: (name, sex, reason) => dispatch(actions.step2.submitAndCloseDialog(name, sex, reason)),
-        deleteMember: id => dispatch(actions.step2.deleteMember(id))
+        deleteMember: id => dispatch(actions.step2.deleteMember(id)),
+        submitList: () => dispatch(actions.step3.submitList())
       },
       step3: {
-        submitList: () => dispatch(actions.step3.submitList())
       }
     }
   }
@@ -164,11 +163,6 @@ export default connect(state => ({ state }), dispatch => ({
         ))}
       </Stepper>
       <div className={classnames(classes.fillWidth, classes.center)}>
-        <PopupMessage
-          open={props.state.pages.step1.warnNoGradeOrClassDialogOpen}
-          onClose={props.dispatcher.pages.step1.closeWarnNoGradeOrClassDialog}
-          text="请选择完整的班级！"
-        />
         {props.state.views.activeStep === 0 && <PageStep1
           {...props.state.pages.step1}
           {...props.state.views}
@@ -193,39 +187,6 @@ export default connect(state => ({ state }), dispatch => ({
           {...props.dispatcher.views}
           {...props.dispatcher.data}
         />}
-        {props.state.views.activeStep !== 2 && (
-          <div className={classes.centerRow}>
-            <Button
-              disabled={props.state.views.activeStep === 0}
-              onClick={props.dispatcher.views.decreaseStep}
-              className={classes.margin}
-            >
-              上一步
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                if (props.state.views.activeStep === 0) {
-                  if (!(props.state.pages.step1.classId && props.state.pages.step1.grade)) {
-                    props.dispatcher.pages.step1.openWarnNoGradeOrClassDialog();
-                    return;
-                  }
-                }
-                else if (props.state.views.activeStep === 1) props.dispatcher.pages.step3.submitList();
-                props.dispatcher.views.increaseStep();
-              }}
-              className={classes.margin}
-            >
-              下一步
-            </Button>
-          </div>
-        )}
-        {props.state.views.activeStep === 2 && props.state.pages.step3.submitState !== "done" && (
-          <Button className={classes.margin} onClick={props.dispatcher.views.backToHeadStep}>
-            返回至开始位置
-          </Button>
-        )}
       </div>
     </div>
   ]);

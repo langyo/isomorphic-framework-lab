@@ -10,12 +10,10 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 
 import Icon from "@mdi/react";
-import { mdiCheck, mdiPlus, mdiClose } from "@mdi/js";
-
-import FormDialog from "../dialogs/addMemberDialog";
+import { mdiCheck, mdiClose } from "@mdi/js";
 
 export default props => {
   const classes = makeStyles(theme => ({
@@ -48,7 +46,7 @@ export default props => {
     }
   }))();
 
-  return <Paper
+  return [<Paper
     className={classnames(
       classes.center,
       classes.fillWidth
@@ -130,5 +128,8 @@ export default props => {
       </Typography>,
       <Icon className={classes.margin} path={mdiClose} size={2} />
     ]}
-  </Paper>;
+  </Paper>,
+  <Button className={classes.margin} onClick={props.backToHeadStep}>
+    返回至开始位置
+  </Button>];
 }
