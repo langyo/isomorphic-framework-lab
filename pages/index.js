@@ -30,7 +30,6 @@ import PageStep1 from "../components/pages/step1";
 import PageStep2 from "../components/pages/step2";
 import PageStep3 from "../components/pages/step3";
 
-import PopupMessage from "../components/dialogs/popupMessageDialog";
 import AboutDialog from "../components/dialogs/aboutDialog";
 import LoginDialog from "../components/dialogs/loginDialog";
 

@@ -19,8 +19,6 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
-import WarnDialog from "./popupMessageDialog";
-
 export default props => {
   const classes = makeStyles(theme => ({
     inputer: {
@@ -29,6 +27,10 @@ export default props => {
     selector: {
       width: 200,
       margin: 10
+    },
+    divider: {
+      marginTop: 10,
+      marginBottom: 10
     }
   }))();
 
@@ -40,11 +42,6 @@ export default props => {
   const [warnDialog, setWarnDialog] = React.useState(false);
 
   return [
-    <WarnDialog
-      open={warnDialog}
-      text="请填写完整的信息，包括姓名与请假理由！"
-      onClose={() => setWarnDialog(false)}
-    />,
     <Dialog fullWidth open={props.open} onClose={props.onClose}>
       <DialogTitle>添加学生</DialogTitle>
       <DialogContent>
@@ -59,7 +56,7 @@ export default props => {
           value={name}
           onChange={e => setName(e.target.value)}
         />
-        <Divider />
+        <Divider className={classes.divider} />
         <FormLabel>性别</FormLabel>
         <FormGroup>
           <RadioGroup
@@ -72,7 +69,7 @@ export default props => {
             <FormControlLabel value="girl" control={<Radio />} label="女" />
           </RadioGroup>
         </FormGroup>
-        <Divider />
+        <Divider className={classes.divider} />
         <Grid container>
           <Grid item xs={12}>
             <FormLabel>请假理由</FormLabel>
@@ -113,10 +110,11 @@ export default props => {
         <Button onClick={props.onClose} color="primary">
           取消
         </Button>
-        <Button onClick={() => {
-          if (name && reason) props.onSubmit(name, sex, reason);
-          else setWarnDialog(true);
-        }} color="primary">
+        <Button
+          disabled={!(name && reason)}
+          onClick={() => props.onSubmit(name, sex, reason)}
+          color="primary"
+        >
           添加
         </Button>
       </DialogActions>
