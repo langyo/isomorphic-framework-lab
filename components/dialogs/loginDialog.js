@@ -10,8 +10,6 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
-import WarnDialog from "./popupMessageDialog";
-
 export default props => {
   const classes = makeStyles(theme => ({
     inputer: {
@@ -22,14 +20,7 @@ export default props => {
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const [warnDialog, setWarnDialog] = React.useState(false);
-
   return [
-    <WarnDialog
-      open={warnDialog}
-      text="请填写完整！"
-      onClose={() => setWarnDialog(false)}
-    />,
     <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle>管理员登录</DialogTitle>
       <DialogContent>
@@ -67,10 +58,11 @@ export default props => {
         <Button onClick={props.onClose} color="primary">
           取消
         </Button>
-        <Button onClick={() => {
-          if (name && keyword) props.onSubmit(name, keyword);
-          else setWarnDialog(true);
-        }} color="primary">
+        <Button
+          disabled={!(name && password)}
+          onClick={() => props.onSubmit(name, password)}
+          color="primary"
+        >
           登录
         </Button>
       </DialogActions>

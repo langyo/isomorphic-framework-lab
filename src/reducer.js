@@ -9,7 +9,8 @@ const initialState = {
     aboutDialogOpen: false,
     loginDialogOpen: false,
 
-    rootMode: false
+    rootMode: false,
+    loginState: 'ready'
   },
   pages: {
     step1: {
@@ -119,6 +120,26 @@ export default handleActions({
       views: {
         ...state.views,
         loginDialogOpen: false
+      }
+    }),
+    throw: state => state
+  },
+  [types.setLoginState]: {
+    next: (state, action) => ({
+      ...state,
+      views: {
+        ...state.views,
+        loginState: action.payload
+      }
+    }),
+    throw: state => state
+  },
+  [types.setRootMode]: {
+    next: (state, action) => ({
+      ...state,
+      views: {
+        ...state.views,
+        rootMode: true
       }
     }),
     throw: state => state

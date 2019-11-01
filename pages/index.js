@@ -48,7 +48,8 @@ export default connect(state => ({ state }), dispatch => ({
       submitAndCloseLoginDialog: (name, password) => dispatch(actions.submitAndCloseLoginDialog(name, password)),
 
       openAboutDialog: () => dispatch(actions.openAboutDialog()),
-      closeAboutDialog: () => dispatch(actions.closeAboutDialog())
+      closeAboutDialog: () => dispatch(actions.closeAboutDialog()),
+      loginRoot: (name, password) => dispatch(actions.loginRoot(name, password))
     },
 
     pages: {
@@ -114,8 +115,15 @@ export default connect(state => ({ state }), dispatch => ({
       <link rel='icon' href='/favicon.ico' />
     </Head>,
     <div className={classnames(classes.center)}>
-      <LoginDialog open={props.state.views.loginDialogOpen} onClose={props.dispatcher.views.closeLoginDialog} />
-      <AboutDialog open={props.state.views.aboutDialogOpen} onClose={props.dispatcher.views.closeAboutDialog} />
+      <LoginDialog
+        open={props.state.views.loginDialogOpen}
+        onClose={props.dispatcher.views.closeLoginDialog}
+        onSubmit={props.dispatcher.views.loginRoot}
+      />
+      <AboutDialog
+        open={props.state.views.aboutDialogOpen}
+        onClose={props.dispatcher.views.closeAboutDialog}
+      />
       <Drawer
         anchor="left"
         open={props.state.views.drawerOpen}

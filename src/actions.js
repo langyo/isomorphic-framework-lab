@@ -14,9 +14,32 @@ const actions = {
 
   openLoginDialog: createAction(types.openLoginDialog),
   closeLoginDialog: createAction(types.closeLoginDialog),
-  submitAndCloseDialog: () => (dispatch, getState) => {
-
+  loginRoot: (name, password) => (dispatch, getState) => {
+    dispatch(actions.setLoginState('loading'));
+      fetch('/api/loginRootAccount', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name, password
+        })
+      }).then(res => res.json()).then(json => {
+        dispatch(actions.setLoginState('ready'));
+        console.log(json);
+        if(json.state === 'success') {
+          dispatch(actions.setRootMode(true));
+          dispatch(actions.closeLoginDialog());
+        } else {
+          dispatch(actions.closeLoginDialog());
+        }
+      }).catch(err => {
+        console.log(err);
+        dispatch(actions.setLoginState('fail'));
+      });
   },
+  setLoginState: createAction(types.setLoginState),
 
   step1: {
     selectGrade: createAction(types.step1.selectGrade, grade => grade),

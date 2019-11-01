@@ -11,6 +11,8 @@ export default {
 
   openLoginDialog: 'open-login-dialog',
   closeLoginDialog: 'close-login-dialog',
+  setLoginState: 'set-login-state',
+  setRootMode: 'set-root-mode',
 
   step1: {
     selectGrade: 'step1-select-grade',
