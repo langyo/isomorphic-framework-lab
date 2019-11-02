@@ -64,7 +64,7 @@ module.exports = server => {
   });
 
   server.use('/api/loginRootAccount', (req, res) => {
-    models.rootAccounts.find({ name: req.body.name }).exec((err, doc) => {
+    models.rootAccounts.findOne({ name: req.body.name }).exec((err, doc) => {
       if(err || doc.password !== req.body.password) {
         res.send(JSON.stringify({ state: 'fail' }));
         res.end();

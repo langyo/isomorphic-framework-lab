@@ -33,6 +33,8 @@ import PageStep3 from "../components/pages/step3";
 import AboutDialog from "../components/dialogs/aboutDialog";
 import LoginDialog from "../components/dialogs/loginDialog";
 
+import SuccessSnackbar from "../components/utils/successSnackbar";
+
 export default connect(state => ({ state }), dispatch => ({
   dispatcher: {
     views: {
@@ -49,7 +51,9 @@ export default connect(state => ({ state }), dispatch => ({
 
       openAboutDialog: () => dispatch(actions.openAboutDialog()),
       closeAboutDialog: () => dispatch(actions.closeAboutDialog()),
-      loginRoot: (name, password) => dispatch(actions.loginRoot(name, password))
+
+      loginRoot: (name, password) => dispatch(actions.loginRoot(name, password)),
+      setLoginState: state => dispatch(actions.setLoginState(state))
     },
 
     pages: {
@@ -65,8 +69,6 @@ export default connect(state => ({ state }), dispatch => ({
         submitAndCloseDialog: (name, sex, reason) => dispatch(actions.step2.submitAndCloseDialog(name, sex, reason)),
         deleteMember: id => dispatch(actions.step2.deleteMember(id)),
         submitList: () => dispatch(actions.step3.submitList())
-      },
-      step3: {
       }
     }
   }
@@ -117,6 +119,7 @@ export default connect(state => ({ state }), dispatch => ({
     <div className={classnames(classes.center)}>
       <LoginDialog
         open={props.state.views.loginDialogOpen}
+        loginState={props.state.views.loginState}
         onClose={props.dispatcher.views.closeLoginDialog}
         onSubmit={props.dispatcher.views.loginRoot}
       />
@@ -124,6 +127,12 @@ export default connect(state => ({ state }), dispatch => ({
         open={props.state.views.aboutDialogOpen}
         onClose={props.dispatcher.views.closeAboutDialog}
       />
+
+      <SuccessSnackbar
+        open={props.state.views.loginState === 'success'}
+        onClose={() => props.dispatcher.views.setLoginState('ready')}
+      />
+
       <Drawer
         anchor="left"
         open={props.state.views.drawerOpen}
@@ -138,12 +147,18 @@ export default connect(state => ({ state }), dispatch => ({
             subheader="当前无管理权限"
           />
           <Divider className={classes.divider} />
-          <ListItem button onClick={props.dispatcher.views.openLoginDialog}>
+          {props.state.views.rootMode === false && <ListItem button onClick={props.dispatcher.views.openLoginDialog}>
             <ListItemIcon>
               <Icon path={mdiLogin} size={1} />
             </ListItemIcon>
             <ListItemText primary={"管理员登录"} />
-          </ListItem>
+          </ListItem>}
+          {props.state.views.rootMode === true && <ListItem button>
+            <ListItemIcon>
+              <Icon path={mdiLogin} size={1} />
+            </ListItemIcon>
+            <ListItemText primary={"退出管理员模式"} />
+          </ListItem>}
           <ListItem button onClick={props.dispatcher.views.openAboutDialog}>
             <ListItemIcon>
               <Icon path={mdiInformation} size={1} />

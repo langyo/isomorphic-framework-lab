@@ -26,12 +26,12 @@ const actions = {
           name, password
         })
       }).then(res => res.json()).then(json => {
-        dispatch(actions.setLoginState('ready'));
-        console.log(json);
         if(json.state === 'success') {
+          dispatch(actions.setLoginState('success'));
           dispatch(actions.setRootMode(true));
           dispatch(actions.closeLoginDialog());
         } else {
+          dispatch(actions.setLoginState('fail'));
           dispatch(actions.closeLoginDialog());
         }
       }).catch(err => {
@@ -40,6 +40,7 @@ const actions = {
       });
   },
   setLoginState: createAction(types.setLoginState),
+  setRootMode: createAction(types.setRootMode),
 
   step1: {
     selectGrade: createAction(types.step1.selectGrade, grade => grade),

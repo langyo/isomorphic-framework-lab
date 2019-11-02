@@ -55,13 +55,18 @@ export default props => {
         <Divider />
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onClose} color="primary">
+        <Button
+          onClick={props.onClose}
+          color="primary"
+          disbaled={props.loginState === 'loading'}
+        >
           取消
         </Button>
         <Button
           disabled={!(name && password)}
           onClick={() => props.onSubmit(name, password)}
           color="primary"
+          disbaled={props.loginState === 'loading'}
         >
           登录
         </Button>
