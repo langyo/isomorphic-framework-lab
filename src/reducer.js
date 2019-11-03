@@ -144,6 +144,16 @@ export default handleActions({
     }),
     throw: state => state
   },
+  [types.quitRootMode]: {
+    next: (state, action) => ({
+      ...state,
+      views: {
+        ...state.views,
+        rootMode: false
+      }
+    }),
+    throw: state => state
+  },
 
   [types.step1.selectGrade]: {
     next: (state, action) => ({

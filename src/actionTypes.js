@@ -13,6 +13,7 @@ export default {
   closeLoginDialog: 'close-login-dialog',
   setLoginState: 'set-login-state',
   setRootMode: 'set-root-mode',
+  quitRootMode: 'quit-root-mode',
 
   step1: {
     selectGrade: 'step1-select-grade',

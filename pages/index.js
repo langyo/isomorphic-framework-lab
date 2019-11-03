@@ -53,6 +53,7 @@ export default connect(state => ({ state }), dispatch => ({
       closeAboutDialog: () => dispatch(actions.closeAboutDialog()),
 
       loginRoot: (name, password) => dispatch(actions.loginRoot(name, password)),
+      quitRoot: () => dispatch(actions.quitRootMode()),
       setLoginState: state => dispatch(actions.setLoginState(state))
     },
 
@@ -139,13 +140,20 @@ export default connect(state => ({ state }), dispatch => ({
         onClose={props.dispatcher.views.closeDrawer}
       >
         <List className={classes.drawerList}>
-          <CardHeader
+          {props.state.views.rootMode === false && <CardHeader
             avatar={
               <Icon path={mdiAccount} size={1} />
             }
-            title="公共模式"
+            title="尚未登录"
             subheader="当前无管理权限"
-          />
+          />}
+          {props.state.views.rootMode === true && <CardHeader
+            avatar={
+              <Icon path={mdiAccount} size={1} />
+            }
+            title="admin"
+            subheader="管理员模式"
+          />}
           <Divider className={classes.divider} />
           {props.state.views.rootMode === false && <ListItem button onClick={props.dispatcher.views.openLoginDialog}>
             <ListItemIcon>
@@ -153,7 +161,7 @@ export default connect(state => ({ state }), dispatch => ({
             </ListItemIcon>
             <ListItemText primary={"管理员登录"} />
           </ListItem>}
-          {props.state.views.rootMode === true && <ListItem button>
+          {props.state.views.rootMode === true && <ListItem button onClick={props.dispatcher.views.quitRoot}>
             <ListItemIcon>
               <Icon path={mdiLogin} size={1} />
             </ListItemIcon>

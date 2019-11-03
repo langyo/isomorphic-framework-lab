@@ -41,6 +41,7 @@ const actions = {
   },
   setLoginState: createAction(types.setLoginState),
   setRootMode: createAction(types.setRootMode),
+  quitRootMode: createAction(types.quitRootMode),
 
   step1: {
     selectGrade: createAction(types.step1.selectGrade, grade => grade),
