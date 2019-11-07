@@ -11,6 +11,8 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+const services = require('./services');
+
 app.prepare().then(() => {
   const server = express();
 
@@ -38,7 +40,7 @@ app.prepare().then(() => {
 
   server.use(bodyParser.json());
 
-  require('./databaseService')(server);
+  services(server);
 
   server.get('/', (req, res) => {
     return app.render(req, res, '/index', req.query)

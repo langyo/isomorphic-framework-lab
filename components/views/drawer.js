@@ -1,0 +1,83 @@
+import React from 'react';
+import classnames from "classnames";
+import { makeStyles } from "@material-ui/core/styles";
+
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/LIstItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import CardHeader from "@material-ui/core/CardHeader";
+
+import Icon from "@mdi/react";
+import { mdiAccount, mdiInformation, mdiLogin } from "@mdi/js";
+
+export default props => {
+  const classes = makeStyles(theme => ({
+    drawerList: {
+      width: 240
+    },
+    divider: {
+      marginTop: 10,
+      marginBottom: 10
+    },
+    center: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column"
+    },
+    centerRow: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row"
+    },
+    margin: {
+      margin: 10
+    }
+  }))();
+
+  return [<Drawer
+    anchor="left"
+    open={props.state.views.drawerOpen}
+    onClose={props.dispatcher.views.closeDrawer}
+  >
+    <List className={classes.drawerList}>
+      {props.state.views.rootMode === false && <CardHeader
+        avatar={
+          <Icon path={mdiAccount} size={1} />
+        }
+        title="尚未登录"
+        subheader="当前无管理权限"
+      />}
+      {props.state.views.rootMode === true && <CardHeader
+        avatar={
+          <Icon path={mdiAccount} size={1} />
+        }
+        title="admin"
+        subheader="管理员模式"
+      />}
+      <Divider className={classes.divider} />
+      {props.state.views.rootMode === false && <ListItem button onClick={props.dispatcher.views.openLoginDialog}>
+        <ListItemIcon>
+          <Icon path={mdiLogin} size={1} />
+        </ListItemIcon>
+        <ListItemText primary={"管理员登录"} />
+      </ListItem>}
+      {props.state.views.rootMode === true && <ListItem button onClick={props.dispatcher.views.quitRoot}>
+        <ListItemIcon>
+          <Icon path={mdiLogin} size={1} />
+        </ListItemIcon>
+        <ListItemText primary={"退出管理员模式"} />
+      </ListItem>}
+      <ListItem button onClick={props.dispatcher.views.openAboutDialog}>
+        <ListItemIcon>
+          <Icon path={mdiInformation} size={1} />
+        </ListItemIcon>
+        <ListItemText primary={"关于"} />
+      </ListItem>
+    </List>
+  </Drawer>, <>{props.child}</>];
+}
