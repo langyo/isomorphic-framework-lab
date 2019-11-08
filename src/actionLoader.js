@@ -1,3 +1,5 @@
+const { actions } = require('./require');
+
 class $ {
   constructor() {
     this.taskList = [];
@@ -31,27 +33,12 @@ class $ {
 
   handle(func) {
     this.fetchCache.handle = func;
-    if (!(this.fetchCache.fetch && this.fetchCache.send && this.fetchCache.route)) throw new Error('必须提供完整的请求流！');
+    if (!(this.fetchCache.fetch && this.fetchCache.route)) throw new Error('必须提供完整的请求流！');
     this.taskList.push({ type: 'fetchCombine', ...this.fetchCache });
     this.fetchCache = {};
     return this;
   }
 }
-
-let dialogActionsRequireFunc = require.context('../actions/dialogs', true, /\.js$/);
-let pageActionsRequireFunc = require.context('../actions/page', true, /\.js$/);
-let viewActionsRequireFunc = require.context('../actions/view', true, /\.js$/);
-let actions = { dialogs: {}, pages: {}, views: {} };
-dialogActionsRequireFunc.keys().forEach(key =>
-  actions.dialogs[key.slice(3).splice('/').reduce((prev, next) => `${prev}.${next}`)] = dialogActionsRequireFunc(key).default
-);
-pageActionsRequireFunc.keys().forEach(key =>
-  actions.pages[key.slice(3).splice('/').reduce((prev, next) => `${prev}.${next}`)] = pageActionsRequireFunc(key).default
-);
-viewActionsRequireFunc.keys().forEach(key =>
-  actions.views[key.slice(3).splice('/').reduce((prev, next) => `${prev}.${next}`)] = viewActionsRequireFunc(key).default
-);
-console.log(actions);
 
 let thunks = {}, services = {}, initState = { dialogs: {}, pages: {}, views: {} };
 

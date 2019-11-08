@@ -1,48 +1,4 @@
-const requireFuncDialogs = require.context('../components/dialogs', true, /\.js$/);
-const requireFuncViews = require.context('../components/views', true, /\.js$/);
-const requireFuncPages = require.context('../components/pages', true, /\.js$/);
-
-let components = { dialogs: {}, pages: {}, views: {} };
-
-requireFuncDialogs.keys().forEach(key => {
-  const dfs = (path, obj) => {
-    let n = path.unshift();
-    if(path.length === 0) {
-      obj[n] = requireFuncDialogs(key).default;
-    } else {
-      if (obj[n]) obj[n] = dfs(path, obj[n]);
-      else obj[n] = dfs(path, {});
-    }
-    return obj;
-  }
-  components.dialogs = dfs(key.slice(3, key.length - 3).splite('/'), components.dialogs);
-});
-requireFuncPages.keys().forEach(key => {
-  const dfs = (path, obj) => {
-    let n = path.unshift();
-    if(path.length === 0) {
-      obj[n] = requireFuncPages(key).default;
-    } else {
-      if (obj[n]) obj[n] = dfs(path, obj[n]);
-      else obj[n] = dfs(path, {});
-    }
-    return obj;
-  }
-  components.pages = dfs(key.slice(3, key.length - 3).splite('/'), components.pages);
-});
-requireFuncViews.keys().forEach(key => {
-  const dfs = (path, obj) => {
-    let n = path.unshift();
-    if(path.length === 0) {
-      obj[n] = requireFuncViews(key).default;
-    } else {
-      if (obj[n]) obj[n] = dfs(path, obj[n]);
-      else obj[n] = dfs(path, {});
-    }
-    return obj;
-  }
-  components.views = dfs(key.slice(3, key.length - 3).splite('/'), components.views);
-});
+import { connected } from './require';
 
 let connected = { dialogs: {}, pages: {}, views: {} }
 
