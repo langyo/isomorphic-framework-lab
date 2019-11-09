@@ -28,7 +28,8 @@ export default connect(state => ({ state }), dispatch => ({}))(props => {
           views[next], { child: React.createElement(views[prev]) })
         ,
         <>
-          {dialogs.map((n, index) => <div key={index}>{React.createElement(n)}</div>)}
+          {Object.keys(dialogs).map((n, index) => <div key={index}>{React.createElement(dialogs[n])}</div>)}
+          {React.createElement(pages[props.renderPage])}
         </>
       )}
     </>
