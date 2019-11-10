@@ -24,8 +24,7 @@ export default connect(state => ({ state }), dispatch => ({}))(props => {
     </Head>,
     <>
       {viewMap.reverse().reduce(
-        (prev, next) => React.createElement(
-          views[next], { child: React.createElement(views[prev]) })
+        (prev, next) => React.createElement(views[next], { child: views[prev] })
         ,
         <>
           {Object.keys(dialogs).map((n, index) => <div key={index}>{React.createElement(dialogs[n])}</div>)}

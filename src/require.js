@@ -5,7 +5,7 @@ let actionViewsReq = require.context('../actions/views', true, /\.js$/);
 let actions = { dialogs: {}, pages: {}, views: {} };
 
 actionDialogsReq.keys().forEach(key => {
-  let path = key.slice(3, key.length - 3).split('/');
+  let path = /^\.+\/(.*)\.js$/.exec(key)[1].split('/');
   let pathStr = path.reduce((prev, next) => `${prev}.${next}`);
   const dfs = (obj, pos) => {
     if (pos + 1 === path.length) obj[path[pos]] = actionDialogsReq(key).default;
@@ -18,7 +18,7 @@ actionDialogsReq.keys().forEach(key => {
   actions.dialogs = dfs(actions.dialogs, 0);
 });
 actionPagesReq.keys().forEach(key => {
-  let path = key.slice(3, key.length - 3).split('/');
+  let path = /^\.+\/(.*)\.js$/.exec(key)[1].split('/');
   let pathStr = path.reduce((prev, next) => `${prev}.${next}`);
   const dfs = (obj, pos) => {
     if (pos + 1 === path.length) obj[path[pos]] = actionPagesReq(key).default;
@@ -31,7 +31,7 @@ actionPagesReq.keys().forEach(key => {
   actions.pages = dfs(actions.pages, 0);
 });
 actionViewsReq.keys().forEach(key => {
-  let path = key.slice(3, key.length - 3).split('/');
+  let path = /^\.+\/(.*)\.js$/.exec(key)[1].split('/');
   let pathStr = path.reduce((prev, next) => `${prev}.${next}`);
   const dfs = (obj, pos) => {
     if (pos + 1 === path.length) obj[path[pos]] = actionViewsReq(key).default;
@@ -51,7 +51,7 @@ const componentPagesReq = require.context('../components/pages', true, /\.js$/);
 let components = { dialogs: {}, pages: {}, views: {} };
 
 componentDialogsReq.keys().forEach(key => {
-  let path = key.slice(3, key.length - 3).split('/');
+  let path = /^\.+\/(.*)\.js$/.exec(key)[1].split('/');
   const dfs = (obj, pos) => {
     if (pos + 1 === path.length) obj[path[pos]] = componentDialogsReq(key).default;
     else {
@@ -63,7 +63,7 @@ componentDialogsReq.keys().forEach(key => {
   components.dialogs = dfs(components.dialogs, 0);
 });
 componentPagesReq.keys().forEach(key => {
-  let path = key.slice(3, key.length - 3).split('/');
+  let path = /^\.+\/(.*)\.js$/.exec(key)[1].split('/');
   const dfs = (obj, pos) => {
     if (pos + 1 === path.length) obj[path[pos]] = componentPagesReq(key).default;
     else {
@@ -75,7 +75,7 @@ componentPagesReq.keys().forEach(key => {
   components.pages = dfs(components.pages, 0);
 });
 componentViewsReq.keys().forEach(key => {
-  let path = key.slice(3, key.length - 3).split('/');
+  let path = /^\.+\/(.*)\.js$/.exec(key)[1].split('/');
   const dfs = (obj, pos) => {
     if (pos + 1 === path.length) obj[path[pos]] = componentViewsReq(key).default;
     else {

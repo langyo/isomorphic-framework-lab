@@ -1,4 +1,4 @@
 export default {
   init: {},
-  openDrawer: $ => $.dispatch({ type: 'views.drawer.open' })
+  openDrawer: $ => $.dispatch(payload => ({ type: 'views.drawer.open' }))
 }

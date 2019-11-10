@@ -41,18 +41,18 @@ export default props => {
 
   return [<Drawer
     anchor="left"
-    open={props.state.views.drawerOpen}
-    onClose={props.dispatcher.views.closeDrawer}
+    open={props.isOpen}
+    onClose={props.close}
   >
     <List className={classes.drawerList}>
-      {props.state.views.rootMode === false && <CardHeader
+      {props.rootMode === false && <CardHeader
         avatar={
           <Icon path={mdiAccount} size={1} />
         }
         title="尚未登录"
         subheader="当前无管理权限"
       />}
-      {props.state.views.rootMode === true && <CardHeader
+      {props.rootMode === true && <CardHeader
         avatar={
           <Icon path={mdiAccount} size={1} />
         }
@@ -60,19 +60,19 @@ export default props => {
         subheader="管理员模式"
       />}
       <Divider className={classes.divider} />
-      {props.state.views.rootMode === false && <ListItem button onClick={props.dispatcher.views.openLoginDialog}>
+      {props.rootMode === false && <ListItem button onClick={props.openLoginDialog}>
         <ListItemIcon>
           <Icon path={mdiLogin} size={1} />
         </ListItemIcon>
         <ListItemText primary={"管理员登录"} />
       </ListItem>}
-      {props.state.views.rootMode === true && <ListItem button onClick={props.dispatcher.views.quitRoot}>
+      {props.rootMode === true && <ListItem button onClick={props.quitRoot}>
         <ListItemIcon>
           <Icon path={mdiLogin} size={1} />
         </ListItemIcon>
         <ListItemText primary={"退出管理员模式"} />
       </ListItem>}
-      <ListItem button onClick={props.dispatcher.views.openAboutDialog}>
+      <ListItem button onClick={props.openAboutDialog}>
         <ListItemIcon>
           <Icon path={mdiInformation} size={1} />
         </ListItemIcon>

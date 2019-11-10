@@ -1,34 +1,36 @@
-import { components } from './require';
+import { components, actions } from './require';
 import { connect } from 'react-redux';
 
 let dialogs = {}, pages = {}, views = {};
 
-for(let i of Object.keys(components.dialogs)) {
-  dialogs[i] = connect(
-    state => ({ ...state.dialogs[i] }),
-    (dispatch => (Object.keys(actions.dialogs[i]).reduce((prev, next) => ({
+for (let component of Object.keys(components.dialogs)) {
+  dialogs[component] = connect(
+    state => ({ ...state.dialogs[component] }),
+    (dispatch => Object.keys(actions.dialogs[component]).reduce((prev, action) => (action !== 'init' ? ({
       ...prev,
-      [next]: arg => dispatch(actions.dialogs[i][next](arg))
-    }), {})))
-  )(components.dialogs[i]);
+      [action]: (payload => dispatch({ type: `dialogs.${component}.${action}`, payload }))
+    }) : (prev)), {}))
+  )(components.dialogs[component]);
 }
-for(let i of Object.keys(components.views)) {
-  views[i] = connect(
-    state => ({ ...state.views[i] }),
-    (dispatch => (Object.keys(actions.views[i]).reduce((prev, next) => ({
+
+for (let component of Object.keys(components.pages)) {
+  pages[component] = connect(
+    state => ({ ...state.pages[component] }),
+    (dispatch => Object.keys(actions.pages[component]).reduce((prev, action) => (action !== 'init' ? ({
       ...prev,
-      [next]: arg => dispatch(actions.views[i][next](arg))
-    }), {})))
-  )(components.views[i]);
+      [action]: (payload => dispatch({ type: `pages.${component}.${action}`, payload }))
+    }) : (prev)), {}))
+  )(components.pages[component]);
 }
-for(let i of Object.keys(components.pages)) {
-  pages[i] = connect(
-    state => ({ ...state.pages[i] }),
-    (dispatch => (Object.keys(actions.pages[i]).reduce((prev, next) => ({
+
+for (let component of Object.keys(components.views)) {
+  views[component] = connect(
+    state => ({ ...state.views[component] }),
+    (dispatch => Object.keys(actions.views[component]).reduce((prev, action) => (action !== 'init' ? ({
       ...prev,
-      [next]: arg => dispatch(actions.pages[i][next](arg))
-    }), {})))
-  )(components.pages[i]);
+      [action]: (payload => dispatch({ type: `views.${component}.${action}`, payload }))
+    }) : (prev)), {}))
+  )(components.views[component]);
 }
 
 export { dialogs, pages, views };

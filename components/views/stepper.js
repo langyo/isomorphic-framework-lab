@@ -7,7 +7,7 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 
 export default props => {
-  return [<Stepper activeStep={props.state.views.activeStep} alternativeLabel>
+  return [<Stepper activeStep={props.step} alternativeLabel>
     {["选择上报班级", "填写上报情况", "提交结果"].map(label => (
       <Step key={label}>
         <StepLabel>{label}</StepLabel>

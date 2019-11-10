@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { initState } from './actionLoader';
+import { initState } from './thunks';
 
 export default handleActions({
   'framework.updateState': (action, state) => {

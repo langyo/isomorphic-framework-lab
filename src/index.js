@@ -19,19 +19,19 @@ app.prepare().then(() => {
   server.use(helmet());
   server.use(compression());
 
-  log4js.configure({
-    appenders: {
-      out: { type: 'stdout' },
-      app: { type: 'file', filename: +(new Date()) + '.log' }
-    },
-    categories: {
-      default: { appenders: ['out', 'app'], level: 'debug' }
-    }
-  });
-
-  const logger = log4js.getLogger('normal');
-
-  server.use(log4js.connectLogger(logger, { level: log4js.levels.INFO }));
+  console.log('Now it is in the', dev ? 'development' : 'production', 'mode.');
+  if(!dev) {
+    log4js.configure({
+      appenders: {
+        out: { type: 'stdout' },
+        app: { type: 'file', filename: +(new Date()) + '.log' }
+      },
+      categories: {
+        default: { appenders: ['out', 'app'], level: 'debug' }
+      }
+    });
+    server.use(log4js.connectLogger(log4js.getLogger('normal'), { level: log4js.levels.INFO }));
+  }
 
   server.use('/static', express.static(path.join(__dirname, '../public'), {
     maxAge: '1d',

@@ -10,7 +10,7 @@ export default {
   close: $ => $.setState(() => ({ open: false })),
   setName: $ => $.setState(payload => ({ name: payload })),
   setPassword: $ => $.setState(payload => ({ password: payload })),
-  login: $ => $.setState({ networkState: 'loading' })
+  login: $ => $.setState(() => ({ networkState: 'loading' }))
     .fetch({ host: 'localhost' })
     .route({ path: '/api/account/login' })
     .send((payload, state) => ({ name: state.dialogs.loginDialog.name, password: state.dialogs.loginDialog.password }))

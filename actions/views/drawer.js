@@ -1,14 +1,14 @@
 export default {
   init: {
-    open: false,
+    isOpen: false,
     rootMode: false,
     rootUserName: ''
   },
   open: $ => $.setState((payload, state) => ({
-    open: true
+    isOpen: true
   })),
   close: $ => $.setState((payload, state) => ({
-    open: false
+    isOpen: false
   })),
   allowRoot: $ => $.setState((paylaod, state) => ({
     rootMode: true,
@@ -17,5 +17,7 @@ export default {
   disallowRoot: $ => $.setState((paylaod, state) => ({
     rootMode: false,
     rootUserName: payload.name
-  }))
+  })),
+
+  openAboutDialog: $ => $.dispatch(payload => ({ type: 'dialogs.aboutDialog.open' }))
 }

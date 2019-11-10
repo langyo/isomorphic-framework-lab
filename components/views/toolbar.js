@@ -11,9 +11,17 @@ import Icon from "@mdi/react";
 import { mdiMenu } from "@mdi/js";
 
 export default props => {
+  const classes = makeStyles(theme => ({
+    margin: {
+      margin: 10
+    }
+  }))();
+
+  console.log('props', props);
+
   return [<AppBar position="static">
     <Toolbar>
-      <IconButton onClick={props.dispatcher.views.openDrawer}>
+      <IconButton onClick={props.openDrawer}>
         <Icon path={mdiMenu} size={1} color="white" />
       </IconButton>
       <Typography variant="h6" className={classes.margin}>
