@@ -4,9 +4,12 @@ export default {
     rootMode: false,
     rootUserName: ''
   },
-  open: $ => $.setState((payload, state) => ({
-    isOpen: true
-  })),
+
+  open: $ => $.setState((payload, state) => {
+    return ({
+      isOpen: true
+    });
+  }),
   close: $ => $.setState((payload, state) => ({
     isOpen: false
   })),

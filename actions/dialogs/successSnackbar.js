@@ -1,7 +1,8 @@
 export default {
   init: {
-    open: false
+    isOpen: false
   },
-  open: $ => $.setState(() => ({ open: true })),
-  close: $ => $.setState(() => ({ open: false }))
+
+  open: $ => $.setState(() => ({ isOpen: true })),
+  close: $ => $.setState(() => ({ isOpen: false }))
 }

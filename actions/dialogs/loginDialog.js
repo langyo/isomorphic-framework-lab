@@ -1,13 +1,14 @@
 export default {
   init: {
-    open: false,
+    isOpen: false,
+
     name: '',
     password: '',
 
     networkState: 'ready'
   },
-  open: $ => $.setState(() => ({ open: true })),
-  close: $ => $.setState(() => ({ open: false })),
+  open: $ => $.setState(() => ({ isOpen: true })),
+  close: $ => $.setState(() => ({ isOpen: false })),
   setName: $ => $.setState(payload => ({ name: payload })),
   setPassword: $ => $.setState(payload => ({ password: payload })),
   login: $ => $.setState(() => ({ networkState: 'loading' }))

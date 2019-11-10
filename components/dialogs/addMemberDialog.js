@@ -42,7 +42,7 @@ export default props => {
   const [warnDialog, setWarnDialog] = React.useState(false);
 
   return [
-    <Dialog fullWidth open={props.open} onClose={props.onClose}>
+    <Dialog fullWidth open={props.isOpen} onClose={props.close}>
       <DialogTitle>添加学生</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -107,12 +107,12 @@ export default props => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onClose} color="primary">
+        <Button onClick={props.close} color="primary">
           取消
         </Button>
         <Button
           disabled={!(name && reason)}
-          onClick={() => props.onSubmit(name, sex, reason)}
+          onClick={() => props.submit(name, sex, reason)}
           color="primary"
         >
           添加

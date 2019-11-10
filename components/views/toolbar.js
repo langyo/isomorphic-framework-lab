@@ -17,8 +17,6 @@ export default props => {
     }
   }))();
 
-  console.log('props', props);
-
   return [<AppBar position="static">
     <Toolbar>
       <IconButton onClick={props.openDrawer}>
@@ -28,5 +26,5 @@ export default props => {
         晨检上报系统
       </Typography>
     </Toolbar>
-  </AppBar>, <>{props.child}</>];
+  </AppBar>];
 }

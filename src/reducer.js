@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { initState } from './thunks';
+import { thunks, initState } from './thunks';
 
 export default handleActions({
   'framework.updateState': (action, state) => {
@@ -22,8 +22,10 @@ export default handleActions({
   'framework.togglePage': (action, state) => ({
     ...state,
     renderPage: action.payload
-  })
+  }),
+  
+  ...thunks
 }, {
   ...initState,
-  renderPage: 'main'
+  renderPage: 'step1' // 这里应当作为配置文件提供比较好
 });

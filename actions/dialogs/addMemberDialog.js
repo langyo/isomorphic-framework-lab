@@ -1,9 +1,9 @@
 export default {
   init: {
-    open: false
+    isOpen: false
   },
-  open: $ => $.setState(() => ({ open: true })),
-  close: $ => $.setState(() => ({ open: false })),
-  submit: $ => $.setState(() => ({ open: false }))
+  open: $ => $.setState(() => ({ isOpen: true })),
+  close: $ => $.setState(() => ({ isOpen: false })),
+  submit: $ => $.setState(() => ({ isOpen: false }))
     .dispatch(payload => ({ type: 'pages.step2.addMember', payload }))
 }

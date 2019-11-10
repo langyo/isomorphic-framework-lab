@@ -1,4 +1,8 @@
 export default {
+  init: {
+    studentList: []
+  },
+  
   openAddMemberDialog: $ => $.dispatch(payload => ({
     type: 'dialog.addMemberDialog.open'
   })),

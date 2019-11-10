@@ -1,4 +1,9 @@
 export default {
+  init: {
+    submitState: 'ready',
+    fetchLatestState: 'ready',
+  },
+
   changeState: $ => $.setState((payload, state) => ({
     submitState: payload
   })),

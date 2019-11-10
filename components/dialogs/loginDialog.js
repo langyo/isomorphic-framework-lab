@@ -21,7 +21,7 @@ export default props => {
   const [password, setPassword] = React.useState("");
 
   return [
-    <Dialog open={props.open} onClose={props.onClose}>
+    <Dialog open={props.isOpen} onClose={props.close}>
       <DialogTitle>管理员登录</DialogTitle>
       <DialogContent>
         <Grid container>
@@ -56,7 +56,7 @@ export default props => {
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={props.onClose}
+          onClick={props.close}
           color="primary"
           disbaled={props.loginState === 'loading'}
         >
@@ -64,7 +64,7 @@ export default props => {
         </Button>
         <Button
           disabled={!(name && password)}
-          onClick={() => props.onSubmit(name, password)}
+          onClick={() => props.submit(name, password)}
           color="primary"
           disbaled={props.loginState === 'loading'}
         >

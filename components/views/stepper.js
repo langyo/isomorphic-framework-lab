@@ -7,11 +7,19 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 
 export default props => {
-  return [<Stepper activeStep={props.step} alternativeLabel>
+  const classes = makeStyles(theme => ({
+    marginTop: {
+      position: 'absolute',
+      top: 60,
+      width: '100%'
+    }
+  }))();
+
+  return [<Stepper activeStep={props.step} alternativeLabel className={classes.marginTop}>
     {["选择上报班级", "填写上报情况", "提交结果"].map(label => (
       <Step key={label}>
         <StepLabel>{label}</StepLabel>
       </Step>
     ))}
-  </Stepper>, <>{props.child}</>];
+  </Stepper>];
 }

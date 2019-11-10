@@ -8,7 +8,7 @@ for (let type of ['dialogs', 'pages', 'views']) {
   for (let name of Object.keys(actions[type])) {
     for (let action of Object.keys(actions[type][name])) {
       if (action === 'init') {
-        initState[type] = actions[type][name][action];
+        initState[type][name] = actions[type][name].init;
         continue;
       }
 
@@ -47,7 +47,7 @@ for (let type of ['dialogs', 'pages', 'views']) {
         }
       }
 
-      thunks[`${type}.${name}.${action}`] = payload => subThunks.reduce((prev, next) => prev(next), payload);
+      thunks[`${type}.${name}.${action}`] = payload => (dispatch, getState) => subThunks.reduce((prev, next) => next(prev, dispatch, getState()), payload);
     }
   }
 }

@@ -79,5 +79,5 @@ export default props => {
         <ListItemText primary={"关于"} />
       </ListItem>
     </List>
-  </Drawer>, <>{props.child}</>];
+  </Drawer>];
 }

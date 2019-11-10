@@ -30,9 +30,9 @@ export default props => {
         vertical: 'top',
         horizontal: 'center',
       }}
-      open={props.open}
+      open={props.isOpen}
       autoHideDuration={3000}
-      onClose={props.onClose}
+      onClose={props.close}
     >
       <SnackbarContent
         className={classes.color}
@@ -43,7 +43,7 @@ export default props => {
           </span>
         }
         action={
-          <IconButton color="inherit" onClick={props.onClose}>
+          <IconButton color="inherit" onClick={props.close}>
             <Icon path={mdiClose} size={1} color='white' />
           </IconButton>
         }
