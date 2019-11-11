@@ -3,8 +3,8 @@ import { thunks } from './thunks';
 
 export default {
   framework: {
-    updateState: createAction('framework.updateState'),
-    togglePage: createAction('framework.togglePage')
+    updateState: createAction('framework.updateState', payload => payload),
+    togglePage: createAction('framework.togglePage', payload => payload)
   },
   dialogs: Object.keys(thunks.dialogs).reduce((prev, name) => ({
     ...prev,

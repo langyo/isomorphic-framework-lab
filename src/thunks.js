@@ -18,26 +18,27 @@ for (let type of ['dialogs', 'pages', 'views']) {
       for (let task of taskList) {
         switch (task.type) {
           case 'setState':
-            subThunks.push(next => (payload, dispatch, state) => {
+            subThunks.push((payload, dispatch, state) => {
               dispatch({
                 type: 'framework.updateState',
                 payload: {
-                  views: {
+                  [type]: {
                     [name]: task.func(payload, state)
                   }
                 }
               });
-              next(payload, dispatch, state);
+              return payload;
             });
             break;
           case 'dispatch':
-            subThunks.push(next => (payload, dispatch, state) => {
+            subThunks.push((payload, dispatch, state) => {
               dispatch(task.func(payload));
-              next(payload, dispatch, state);
+              return payload;
             });
             break;
           case 'fetchCombine':
-            subThunks.push(next => (payload, dispatch, state) => fetch(task.fetch.host + task.route.path, {
+            // 记得都改为 js 的 generator
+            subThunks.push((payload, dispatch, state) => fetch(task.fetch.host + task.route.path, {
               ...task.fetch,
               body: task.send ? task.send(payload, state) : {}
             }).then(res => res.json()).then(json => next(json, dispatch, state)));
@@ -47,7 +48,13 @@ for (let type of ['dialogs', 'pages', 'views']) {
         }
       }
 
-      thunks[`${type}.${name}.${action}`] = payload => (dispatch, getState) => subThunks.reduce((prev, next) => next(prev, dispatch, getState()), payload);
+      thunks[`${type}.${name}.${action}`] = payload => (dispatch, getState) => {
+        let ret = payload;
+        for(let thunk of subThunks) {
+          ret = thunk(ret, dispatch, getState());
+          console.log(ret);
+        }
+      };
     }
   }
 }

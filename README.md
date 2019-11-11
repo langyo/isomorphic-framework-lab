@@ -4,10 +4,6 @@
 
 使用方法：
 
-1. 请确保已经安装了 Node.js 与 MongoDB，并且 MongoDB 服务已开启。
+1. 请确保已经安装了 Git 、 Node.js 与 MongoDB，并且 MongoDB 服务已开启。
 
-2. 进入命令行，导航到此包裹的解压目录，执行 ```npm serve``` 即可。
-
-3. 如需获得更新，只需要确保额外安装了 Git，执行 ```git pull``` 与 ```npm install``` 即可获取更新后的源代码。
-
-> 如果安装了 yarn，可以使用 ```yarn``` 命令替代 ```npm install``` 以获得更快的库依赖下载速度。
+2. 运行 start.bat。

@@ -2,7 +2,7 @@ import { handleActions } from 'redux-actions';
 import { thunks, initState } from './thunks';
 
 export default handleActions({
-  'framework.updateState': (action, state) => {
+  'framework.updateState': (state, action) => {
     const merge = (obj1, obj2) => {
       let ret  = {...obj1};
       for(let i of Object.keys(obj2)) {
@@ -19,7 +19,7 @@ export default handleActions({
     return merge(state, action.payload);
   },
 
-  'framework.togglePage': (action, state) => ({
+  'framework.togglePage': (state, action) => ({
     ...state,
     renderPage: action.payload
   }),

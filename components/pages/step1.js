@@ -11,6 +11,13 @@ import Button from "@material-ui/core/Button";
 
 export default props => {
   const classes = makeStyles(theme => ({
+    root: {
+      marginTop: 100,
+      width: '60%',
+      height: '100%',
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    },
     centerRow: {
       display: "flex",
       justifyContent: "center",
@@ -31,6 +38,7 @@ export default props => {
   return [
     <Paper
       className={classnames(
+        classes.root,
         classes.centerRow,
         classes.fillWidth
       )}

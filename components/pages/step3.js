@@ -17,6 +17,13 @@ import { mdiCheck, mdiClose } from "@mdi/js";
 
 export default props => {
   const classes = makeStyles(theme => ({
+    root: {
+      marginTop: 100,
+      width: '60%',
+      height: '100%',
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    },
     center: {
       display: "flex",
       justifyContent: "center",
@@ -48,6 +55,7 @@ export default props => {
 
   return [<Paper
     className={classnames(
+      classes.root,
       classes.center,
       classes.fillWidth
     )}

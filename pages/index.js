@@ -22,7 +22,7 @@ export default connect(state => state, dispatch => ({}))(props => {
       <link rel='icon' href='/favicon.ico' />
     </Head>,
     <>
-      {Object.keys(views).map(n => React.createElement(views[n]))}
+      {Object.keys(views).map((n, index) => <div key={index}>{React.createElement(views[n])}</div>)}
       {Object.keys(dialogs).map((n, index) => <div key={index}>{React.createElement(dialogs[n])}</div>)}
       {React.createElement(pages[props.renderPage])}
     </>

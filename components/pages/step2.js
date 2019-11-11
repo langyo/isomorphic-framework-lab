@@ -19,6 +19,13 @@ import FormDialog from "../dialogs/addMemberDialog";
 
 export default props => {
   const classes = makeStyles(theme => ({
+    root: {
+      marginTop: 100,
+      width: '60%',
+      height: '100%',
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    },
     centerRow: {
       display: "flex",
       justifyContent: "center",
@@ -36,7 +43,7 @@ export default props => {
     }
   }))();
 
-  return [<Paper>
+  return [<Paper className={classes.root}>
     <Table>
       <TableHead>
         <TableRow>
