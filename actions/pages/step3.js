@@ -22,16 +22,18 @@ export default {
     payload: 'loading'
   }))
   .fetch({
-    host: 'localhost',
-    type: 'json'
+    host: '',
+    type: 'json',
+    method: 'POST'
   })
-  .send(state => ({
+  .send((payload, state) => ({
     list: state.pages.step2.studentList,
     grade: state.pages.step1.grade,
     classId: state.pages.step1.classId
   }))
   .route({ path: '/api/submit' })
   .handle((payload, context, replyFunc) => {
+    console.log('[payload]:', payload)
     for(let i of payload.list) {
       (new context.db.logger({
         name: i.name,

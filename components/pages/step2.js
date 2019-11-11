@@ -105,8 +105,8 @@ export default props => {
       variant="contained"
       color="primary"
       onClick={() => {
-        props.submitList();
         props.increaseStep();
+        props.submitList();
       }}
       className={classes.margin}
     >

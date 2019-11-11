@@ -39,10 +39,9 @@ for (let type of ['dialogs', 'pages', 'views']) {
             });
             break;
           case 'fetchCombine':
-            // 记得都改为 js 的 generator
-            subThunks.push(next => (payload, dispatch, state) => fetch(task.fetch.host + task.route.path, {
+            subThunks.push(next => (payload, dispatch, state) => fetch(task.fetch.host || '' + task.route.path, {
               ...task.fetch,
-              body: task.send ? task.send(payload, state) : {}
+              body: task.send ? JSON.stringify(task.send(payload, state)) : '{}'
             }).then(res => res.json()).then(json => next(json, dispatch, state)));
             break;
           default:
