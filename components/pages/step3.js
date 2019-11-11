@@ -79,13 +79,13 @@ export default props => {
       <Icon className={classes.margin} path={mdiClose} size={2} />
     ]}
 
-    {props.fetchLatestState === 'loading' && [
+    {props.fetchLatestReportState === 'loading' && [
       <Typography className={classes.margin} variant="body1">
         正在获取最近上报的记录列表
       </Typography>,
       <CircularProgress className={classes.margin} />
     ]}
-    {props.fetchLatestState === 'success' && <Paper className={classes.body}>
+    {props.fetchLatestReportState === 'success' && <Paper className={classes.body}>
       <Typography className={classes.margin} variant="h6">最近 10 次晨检上报记录的学生列表</Typography>
       <Table>
         <TableHead>
@@ -108,7 +108,7 @@ export default props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.fetchLatestList.map((n, index) =>
+          {props.latestReportList.map((n, index) =>
             <TableRow key={index}>
               <TableCell className={classes.tableItem} component="th" scope="row">
                 <Typography variant="body1">{n.name}</Typography>
@@ -130,14 +130,14 @@ export default props => {
         </TableBody>
       </Table>
     </Paper>}
-    {props.fetchLatestState === 'fail' && [
+    {props.fetchLatestReportState === 'fail' && [
       <Typography className={classes.margin} variant="body1">
         获取上报列表失败
       </Typography>,
       <Icon className={classes.margin} path={mdiClose} size={2} />
     ]}
   </Paper>,
-  <Button className={classes.margin} onClick={props.backToHeadStep}>
+  <Button className={classes.margin} onClick={() => props.backToHeadStep()}>
     返回至开始位置
   </Button>];
 }

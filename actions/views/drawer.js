@@ -5,11 +5,9 @@ export default {
     rootUserName: ''
   },
 
-  open: $ => $.setState((payload, state) => {
-    return ({
+  open: $ => $.setState((payload, state) => ({
       isOpen: true
-    });
-  }),
+  })),
   close: $ => $.setState((payload, state) => ({
     isOpen: false
   })),
@@ -22,5 +20,6 @@ export default {
     rootUserName: payload.name
   })),
 
-  openAboutDialog: $ => $.dispatch(payload => ({ type: 'dialogs.aboutDialog.open' }))
+  openAboutDialog: $ => $.dispatch(payload => ({ type: 'dialogs.aboutDialog.open' })),
+  openLoginDialog: $ => $.dispatch(payload => ({ type: 'dialogs.loginDialog.open' }))
 }

@@ -19,7 +19,7 @@ export default props => {
 
   return [<AppBar position="static">
     <Toolbar>
-      <IconButton onClick={props.openDrawer}>
+      <IconButton onClick={() => props.openDrawer()}>
         <Icon path={mdiMenu} size={1} color="white" />
       </IconButton>
       <Typography variant="h6" className={classes.margin}>

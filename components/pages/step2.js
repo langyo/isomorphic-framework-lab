@@ -15,8 +15,6 @@ import Button from "@material-ui/core/Button";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiClose } from "@mdi/js";
 
-import FormDialog from "../dialogs/addMemberDialog";
-
 export default props => {
   const classes = makeStyles(theme => ({
     root: {
@@ -49,7 +47,7 @@ export default props => {
         <TableRow>
           <TableCell className={classes.tableIcon}>
             <IconButton
-              onClick={() => props.openAddMemberDialog(true)}
+              onClick={() => props.openAddMemberDialog()}
             >
               <Icon path={mdiPlus} size={1} />
             </IconButton>
@@ -88,21 +86,17 @@ export default props => {
         )}
       </TableBody>
     </Table>
-    {props.studentList.length === 0 && [<Typography variant="body1" className={classes.margin}>
+    {props.studentList.length === 0 && 
+    [<Typography variant="body1" className={classes.margin}>
       上报列表是空的，点击表格左上角的加号可以添加未到的同学
     </Typography>,
     <Typography variant="body1" className={classes.margin}>
       如果没有需要上报的同学，直接点击下一步提交即可
     </Typography>]}
-    <FormDialog
-      open={props.addMemberDialogOpen}
-      onClose={props.closeAddMemberDialog}
-      onSubmit={props.submitAndCloseDialog}
-    />
   </Paper>,
   <div className={classes.centerRow}>
     <Button
-      onClick={props.decreaseStep}
+      onClick={() => props.decreaseStep()}
       className={classes.margin}
     >
       上一步

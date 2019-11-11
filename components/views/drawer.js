@@ -42,7 +42,7 @@ export default props => {
   return [<Drawer
     anchor="left"
     open={props.isOpen}
-    onClose={props.close}
+    onClose={() => props.close()}
   >
     <List className={classes.drawerList}>
       {props.rootMode === false && <CardHeader
@@ -60,19 +60,19 @@ export default props => {
         subheader="管理员模式"
       />}
       <Divider className={classes.divider} />
-      {props.rootMode === false && <ListItem button onClick={props.openLoginDialog}>
+      {props.rootMode === false && <ListItem button onClick={() => props.openLoginDialog()}>
         <ListItemIcon>
           <Icon path={mdiLogin} size={1} />
         </ListItemIcon>
         <ListItemText primary={"管理员登录"} />
       </ListItem>}
-      {props.rootMode === true && <ListItem button onClick={props.quitRoot}>
+      {props.rootMode === true && <ListItem button onClick={() => props.quitRoot()}>
         <ListItemIcon>
           <Icon path={mdiLogin} size={1} />
         </ListItemIcon>
         <ListItemText primary={"退出管理员模式"} />
       </ListItem>}
-      <ListItem button onClick={props.openAboutDialog}>
+      <ListItem button onClick={() => props.openAboutDialog()}>
         <ListItemIcon>
           <Icon path={mdiInformation} size={1} />
         </ListItemIcon>

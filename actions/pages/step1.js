@@ -10,5 +10,9 @@ export default {
 
   selectClass: $ => $.setState((payload, state) => ({
     classId: payload
-  }))
+  })),
+
+  increaseStep: $ => $.dispatch(payload => ({
+    type: 'views.stepper.increase'
+  })) 
 }

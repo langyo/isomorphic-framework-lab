@@ -66,16 +66,10 @@ export default props => {
     </Paper>,
     <div className={classes.centerRow}>
       <Button
-        disabled
-        className={classes.margin}
-      >
-        上一步
-      </Button>
-      <Button
         variant="contained"
         color="primary"
         disabled={!(props.classId && props.grade)}
-        onClick={props.increaseStep}
+        onClick={() => props.increaseStep()}
         className={classes.margin}
       >
         下一步

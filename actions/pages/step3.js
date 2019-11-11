@@ -1,14 +1,20 @@
 export default {
   init: {
     submitState: 'ready',
-    fetchLatestState: 'ready',
+    fetchLatestReportState: 'ready',
+
+    latestReportList: []
   },
 
   changeState: $ => $.setState((payload, state) => ({
     submitState: payload
   })),
-  updateLatestListState: $ => $.setState((payload, state) => ({
+  updateLatestReportListState: $ => $.setState((payload, state) => ({
     fetchLatestState: payload
+  })),
+
+  backToHeadStep: $ => $.dispatch(payload => ({
+    type: 'views.stepper.reset'
   })),
 
   submitList: $ => $.dispatch(payload => ({
@@ -41,6 +47,6 @@ export default {
   })
   .dispatch(payload => ({
     type: 'pages.step3.changeState',
-    payload: 'success'
+    payload: payload.state
   }))
 }

@@ -18,7 +18,7 @@ for (let type of ['dialogs', 'pages', 'views']) {
       for (let task of taskList) {
         switch (task.type) {
           case 'setState':
-            subThunks.push((payload, dispatch, state) => {
+            subThunks.push(next => (payload, dispatch, state) => {
               dispatch({
                 type: 'framework.updateState',
                 payload: {
@@ -27,18 +27,20 @@ for (let type of ['dialogs', 'pages', 'views']) {
                   }
                 }
               });
-              return payload;
+              next(payload, dispatch, state);
             });
             break;
           case 'dispatch':
-            subThunks.push((payload, dispatch, state) => {
-              dispatch(task.func(payload));
-              return payload;
+            subThunks.push(next =>  (payload, dispatch, state) => {
+              let ret = task.func(payload, state);
+              if(/^framework\./.test(ret.type)) dispatch({ ...ret });
+              else dispatch(thunks[ret.type](ret.payload));
+              next(payload, dispatch, state);
             });
             break;
           case 'fetchCombine':
             // 记得都改为 js 的 generator
-            subThunks.push((payload, dispatch, state) => fetch(task.fetch.host + task.route.path, {
+            subThunks.push(next => (payload, dispatch, state) => fetch(task.fetch.host + task.route.path, {
               ...task.fetch,
               body: task.send ? task.send(payload, state) : {}
             }).then(res => res.json()).then(json => next(json, dispatch, state)));
@@ -49,11 +51,13 @@ for (let type of ['dialogs', 'pages', 'views']) {
       }
 
       thunks[`${type}.${name}.${action}`] = payload => (dispatch, getState) => {
-        let ret = payload;
+        subThunks.reverse();
+        let combine = subThunks[0](() => {});
+        subThunks = subThunks.slice(1);
         for(let thunk of subThunks) {
-          ret = thunk(ret, dispatch, getState());
-          console.log(ret);
+          combine = thunk(combine);
         }
+        combine(payload, dispatch, getState());
       };
     }
   }

@@ -12,8 +12,17 @@ export default {
     return { studentList };
   }),
   deleteMember: $ => $.setState((payload, state) => {
-    let studentList = Array.prototype.slice.call(state.pages.step2.studentList);
-    studentList.splice(payload, 1);
-    return { studentList };
-  })
+    return { studentList: studentList.splice(payload, 1) };
+  }),
+
+  submitList: $ => $.dispatch(payload => ({
+    type: 'pages.step3.submitList'
+  })),
+
+  increaseStep: $ => $.dispatch(payload => ({
+    type: 'views.stepper.increase'
+  })),
+  decreaseStep: $ => $.dispatch(payload => ({
+    type: 'views.stepper.decrease'
+  }))
 }
