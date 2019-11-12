@@ -22,18 +22,16 @@ export default {
     payload: 'loading'
   }))
   .fetch({
-    host: '',
-    type: 'json',
-    method: 'POST'
+    host: ''
   })
   .send((payload, state) => ({
-    list: state.pages.step2.studentList,
-    grade: state.pages.step1.grade,
-    classId: state.pages.step1.classId
+      list: state.pages.step2.studentList,
+      grade: state.pages.step1.grade,
+      classId: state.pages.step1.classId
   }))
   .route({ path: '/api/submit' })
   .handle((payload, context, replyFunc) => {
-    console.log('[payload]:', payload)
+    console.log('[handle]:', payload)
     for(let i of payload.list) {
       (new context.db.logger({
         name: i.name,
@@ -42,10 +40,13 @@ export default {
         grade: req.body.grade,
         classId: req.body.classId
       })).save(err => {
-        if(err) replyFunc({ state: 'error' });
-        else replyFunc({ state: 'success' });
+        if(err) {
+          replyFunc({ state: 'error' });
+          return;
+        }
       });
     }
+    replyFunc({ state: 'success' });
   })
   .dispatch(payload => ({
     type: 'pages.step3.changeState',

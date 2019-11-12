@@ -31,15 +31,20 @@ for (let type of ['dialogs', 'pages', 'views']) {
             });
             break;
           case 'dispatch':
-            subThunks.push(next =>  (payload, dispatch, state) => {
+            subThunks.push(next => (payload, dispatch, state) => {
               let ret = task.func(payload, state);
-              if(/^framework\./.test(ret.type)) dispatch({ ...ret });
+              if (/^framework\./.test(ret.type)) dispatch({ ...ret });
               else dispatch(thunks[ret.type](ret.payload));
               next(payload, dispatch, state);
             });
             break;
           case 'fetchCombine':
             subThunks.push(next => (payload, dispatch, state) => fetch(task.fetch.host || '' + task.route.path, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
               ...task.fetch,
               body: task.send ? JSON.stringify(task.send(payload, state)) : '{}'
             }).then(res => res.json()).then(json => next(json, dispatch, state)));
@@ -50,11 +55,9 @@ for (let type of ['dialogs', 'pages', 'views']) {
       }
 
       thunks[`${type}.${name}.${action}`] = payload => (dispatch, getState) => {
-        subThunks.reverse();
-        let combine = subThunks[0](() => {});
-        subThunks = subThunks.slice(1);
-        for(let thunk of subThunks) {
-          combine = thunk(combine);
+        let combine = subThunks[subThunks.length - 1](() => console.log('The action', `${type}.${name}.${action}`, 'has been executed.'));
+        for(let i = subThunks.length - 2; i >= 0; --i) {
+          combine = subThunks[i](combine);
         }
         combine(payload, dispatch, getState());
       };

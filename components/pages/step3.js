@@ -137,7 +137,9 @@ export default props => {
       <Icon className={classes.margin} path={mdiClose} size={2} />
     ]}
   </Paper>,
-  <Button className={classes.margin} onClick={() => props.backToHeadStep()}>
-    返回至开始位置
-  </Button>];
+  <div className={classes.centerRow}>
+    <Button className={classes.margin} onClick={() => props.backToHeadStep()}>
+      返回至开始位置
+    </Button>
+  </div>];
 }
