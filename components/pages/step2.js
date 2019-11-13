@@ -64,6 +64,7 @@ export default props => {
         </TableRow>
       </TableHead>
       <TableBody>
+        {console.log(props.studentList)}
         {props.studentList.map((n, index) =>
           <TableRow key={index}>
             <TableCell className={classes.tableIcon}>

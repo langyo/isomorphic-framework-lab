@@ -4,7 +4,7 @@ export default {
   },
   
   openAddMemberDialog: $ => $.dispatch(payload => ({
-    type: 'dialog.addMemberDialog.open'
+    type: 'dialogs.addMemberDialog.open'
   })),
   addMember: $ => $.setState((payload, state) => {
     let studentList = state.pages.step2.studentList;
