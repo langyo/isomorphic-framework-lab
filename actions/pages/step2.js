@@ -12,7 +12,9 @@ export default {
     return { studentList };
   }),
   deleteMember: $ => $.setState((payload, state) => {
-    return { studentList: studentList.splice(payload, 1) };
+    let studentList = state.pages.step2.studentList;
+    studentList.splice(payload, 1);
+    return { studentList };
   }),
 
   submitList: $ => $.dispatch(payload => ({

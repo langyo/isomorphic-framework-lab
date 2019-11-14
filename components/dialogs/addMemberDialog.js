@@ -112,7 +112,7 @@ export default props => {
         </Button>
         <Button
           disabled={!(name && reason)}
-          onClick={() => props.submit(name, sex, reason)}
+          onClick={() => props.submit({ name, sex, reason })}
           color="primary"
         >
           添加

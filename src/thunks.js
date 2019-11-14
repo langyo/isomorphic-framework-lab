@@ -55,6 +55,7 @@ for (let type of ['dialogs', 'pages', 'views']) {
       }
 
       thunks[`${type}.${name}.${action}`] = payload => (dispatch, getState) => {
+        console.log('The action', `${type}.${name}.${action}`, 'will be executed.')
         let combine = subThunks[subThunks.length - 1](() => console.log('The action', `${type}.${name}.${action}`, 'has been executed.'));
         for(let i = subThunks.length - 2; i >= 0; --i) {
           combine = subThunks[i](combine);
