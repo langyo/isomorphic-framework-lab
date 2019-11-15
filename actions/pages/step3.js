@@ -37,8 +37,8 @@ export default {
         name: i.name,
         sex: i.sex,
         reason: i.reason,
-        grade: req.body.grade,
-        classId: req.body.classId
+        grade: payload.grade,
+        classId: payload.classId
       })).save(err => {
         if(err) {
           replyFunc({ state: 'error' });
